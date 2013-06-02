@@ -13,7 +13,7 @@
             android:onClick="reload" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/titleBarAreaName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"

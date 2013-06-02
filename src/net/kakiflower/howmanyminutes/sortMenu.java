@@ -118,6 +118,8 @@ public class sortMenu extends Activity {
     	
     	// ‘‚«‚İ‚ğI—¹
     	editor.commit();
+
+    	setResult(RESULT_OK);
     	
     	finish();
     }
