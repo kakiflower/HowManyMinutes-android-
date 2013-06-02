@@ -9,7 +9,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5px"
-            android:background="@drawable/btn_60x30_reload" />
+            android:background="@drawable/btn_60x30_reload"
+            android:onClick="reload" />
 
         <TextView
             android:id="@+id/textView1"
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5px"
-            android:background="@drawable/btn_60x30_change" />
+            android:background="@drawable/btn_60x30_change"
+            android:onClick="change" />
  
     </LinearLayout>

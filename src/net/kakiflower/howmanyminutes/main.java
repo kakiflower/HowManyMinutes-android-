@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class main extends Activity {
 	
@@ -74,4 +77,24 @@ public class main extends Activity {
         ListView lv = (ListView)findViewById(R.id.listview);
         lv.setAdapter(sa);
     }
+    
+    /*
+     * 「更新」ボタンが押された時
+     */
+    public void reload(View v){
+    	Toast.makeText(this, "更新が押されました。", Toast.LENGTH_LONG).show();
+    }
+    
+    /*
+     * 「切替」ボタンが押された時
+     */
+    public void change(View v){
+    	Toast.makeText(this, "切替が押されました。", Toast.LENGTH_LONG).show();
+    	
+    	// インテントのインスタンス生成
+    	Intent intent = new Intent(main.this, sortMenu.class);
+    	// 次画面のアクティビティ起動
+    	startActivity( intent );
+    }
+
 }
