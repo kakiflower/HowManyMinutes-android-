@@ -103,7 +103,7 @@ public class JSONClient extends AsyncTask<String, Void, JSONObject>{
     @Override
     public void onPreExecute() {
         progressDialog = new ProgressDialog(curContext);
-        progressDialog.setMessage("待ち時間情報を更新中…。");
+        progressDialog.setMessage("譛譁ｰ諠�蝣ｱ繧貞叙蠕嶺ｸｭ窶ｦ");
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         progressDialog.show();

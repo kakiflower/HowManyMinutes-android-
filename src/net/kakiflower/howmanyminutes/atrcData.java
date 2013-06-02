@@ -11,7 +11,7 @@ public class atrcData {
 	private String run;				// 運営状況
 	private String update;			// 更新時間 XX:XX
 	private String wait;			// 待ち時間 XX:XX
-	private Boolean my_attr_flg;	// Myアトラクションフラグ TRUE:指定あり , FALSE:指定なし
+	private String bookmark;		// Myアトラクションフラグ ON:指定あり , OFF:指定なし
 	
 	public String getArea_name() {
 		return area_name;
@@ -61,12 +61,12 @@ public class atrcData {
 		this.wait = wait;
 	}
 	
-	public Boolean getMy_attr_flg() {
-		return my_attr_flg;
+	public String getBookmark() {
+		return bookmark;
 	}
 
-	public void setMy_attr_lg(Boolean my_attr_flg) {
-		this.my_attr_flg = my_attr_flg;
+	public void setBookmark(String bookmark) {
+		this.bookmark = bookmark;
 	}
 
 }

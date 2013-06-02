@@ -37,9 +37,9 @@ public final class R {
         public static final int icon_60x40_fp_on=0x7f02000e;
     }
     public static final class id {
-        public static final int MyAttraction=0x7f090011;
         public static final int atrcList=0x7f090000;
         public static final int atrc_name=0x7f090012;
+        public static final int bookmark=0x7f090011;
         public static final int btnChange=0x7f09001b;
         public static final int btnReload=0x7f090019;
         public static final int button1=0x7f09000e;

@@ -1,29 +1,17 @@
 package net.kakiflower.howmanyminutes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.net.ParseException;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -31,38 +19,52 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class main extends Activity {
+public class main extends Activity implements OnItemClickListener{
 	
-	// i‚è‚İğŒ
+	// çµã‚Šè¾¼ã¿æ¡ä»¶
 	SharedPreferences sp;
 	
-	// JSONƒf[ƒ^æ“¾æ
+	// JSONãƒ‡ãƒ¼ã‚¿å–å¾—å…ˆ
 	private String tdlUrl = "http://www.kakiflower.net/tdl.php";
 	private String tdsUrl = "http://www.kakiflower.net/tds.php";
 	
-	// JSONƒf[ƒ^
-	JSONClient jsonClient;
-	JSONObject rootJsonObj;
-	ArrayList<atrcData> atrcList;
+	// æœ€å¾Œã«é¸æŠã—ãŸãƒªã‚¹ãƒˆç•ªå·
+	private int _pos;
+	
+	// ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ€ãƒ—ã‚¿
+	public CustomAdapter ca;
+
+	// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼è¨­ç½®ç”¨ArrayList
+	public ArrayList<HashMap<String, String>> data;
+	
+	// è¡¨ç¤ºç”¨ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼
+	public ListView lv;
+	
+	// JSONãƒ‡ãƒ¼ã‚¿
+	public JSONClient jsonClient;
+	public JSONObject rootJsonObj;
+	public ArrayList<atrcData> atrcList;
 	
 	// JSONListener
 	GetJSONListener jsonListener = new GetJSONListener() {
 		@Override
 		public void onRemoteCallComplete(JSONObject jsonFromNet) {
 
-			// JSONƒf[ƒ^‚©‚çatrcList‚É‚Ü‚Æ‚ß‚é
+			// JSONãƒ‡ãƒ¼ã‚¿ã‹ã‚‰atrcListã«ã¾ã¨ã‚ã‚‹
 			createAtrcList(jsonFromNet);
-			
-			// ƒ\[ƒgğŒ‚É‚æ‚Á‚Ä•À‚×‘Ö‚¦‚ğs‚¤
+
+			// ã‚½ãƒ¼ãƒˆæ¡ä»¶ã«ã‚ˆã£ã¦ä¸¦ã¹æ›¿ãˆã‚’è¡Œã†
 			setFilter();
 			
-			// ‘Ò‚¿ŠÔƒŠƒXƒg‚Ì¶¬‚ğs‚¤
+			// å¾…ã¡æ™‚é–“ãƒªã‚¹ãƒˆã®ç”Ÿæˆã‚’è¡Œã†
 			initAtrcList();
 		}
 	};
@@ -72,50 +74,50 @@ public class main extends Activity {
     	
     	super.onCreate(savedInstanceState);
     	
-        // ƒJƒXƒ^ƒ€ƒ^ƒCƒgƒ‹‚ğg—p‚·‚é
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚¿ã‚¤ãƒˆãƒ«ã‚’ä½¿ç”¨ã™ã‚‹
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
-        // ƒAƒNƒeƒBƒrƒeƒB‚ğƒZƒbƒg
+        // ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ã‚»ãƒƒãƒˆ
         setContentView(R.layout.activity_main);        
 
-        // ƒJƒXƒ^ƒ€ƒ^ƒCƒgƒ‹‚ğƒZƒbƒg
+        // ã‚«ã‚¹ã‚¿ãƒ ã‚¿ã‚¤ãƒˆãƒ«ã‚’ã‚»ãƒƒãƒˆ
         getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
 
-    	// ƒ^ƒCƒgƒ‹ƒo[—p‚ÌƒGƒŠƒA–¼‚ğİ’è
+    	// ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ç”¨ã®ã‚¨ãƒªã‚¢åã‚’è¨­å®š
     	this._setTitleBarName();
 
-    	// ÅV‚Ì‘Ò‚¿ŠÔJSONƒf[ƒ^‚ğæ“¾
+    	// æœ€æ–°ã®å¾…ã¡æ™‚é–“JSONãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
     	this._reload();
 
     }
     
     /*
-     * uXVvƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
+     * ã€Œæ›´æ–°ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚
      */
     public void reload(View v){
 
-    	// ƒ^ƒCƒgƒ‹ƒo[—p‚ÌƒGƒŠƒA–¼‚ğİ’è
+    	// ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ç”¨ã®ã‚¨ãƒªã‚¢åã‚’è¨­å®š
     	this._setTitleBarName();
 
-    	// XVˆ—
+    	// æ›´æ–°å‡¦ç†
     	this._reload();
     }
 
     /*
-     * ƒ^ƒCƒgƒ‹ƒo[‚Ìİ’è
+     * ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ã®è¨­å®š
      */
     private void _setTitleBarName() {
 
-    	// SharedPreferences‚Ìæ“¾
+    	// SharedPreferencesã®å–å¾—
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
         String title_tmp;
         
-        // ƒ^ƒCƒgƒ‹‚É•\¦‚µ‚Ä‚¢‚éƒGƒŠƒAuƒfƒBƒYƒj[ƒ‰ƒ“ƒh/ƒfƒBƒYƒj[ƒV[v‚ğİ’è
+        // ã‚¿ã‚¤ãƒˆãƒ«ã«è¡¨ç¤ºã—ã¦ã„ã‚‹ã‚¨ãƒªã‚¢ã€Œãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ãƒ©ãƒ³ãƒ‰/ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ã‚·ãƒ¼ã€ã‚’è¨­å®š
         if ("TDS".equals(sp.getString("AREA", "TDS"))) {
-        	title_tmp = "ƒfƒBƒYƒj[ƒV[";
+        	title_tmp = "ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ã‚·ãƒ¼";
         }
         else {
-        	title_tmp = "ƒfƒBƒYƒj[ƒ‰ƒ“ƒh";
+        	title_tmp = "ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ãƒ©ãƒ³ãƒ‰";
         }
         
         TextView title = (TextView)findViewById(R.id.titleBarAreaName);
@@ -123,48 +125,48 @@ public class main extends Activity {
 
     }
     /*
-     * ÅV‚Ì‘Ò‚¿ŠÔî•ñ‚ğæ“¾‚·‚é
+     * æœ€æ–°ã®å¾…ã¡æ™‚é–“æƒ…å ±ã‚’å–å¾—ã™ã‚‹
      */
     private void _reload(){
 
-        // SharedPreferences‚Ìæ“¾
+        // SharedPreferencesã®å–å¾—
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
         
-        // “Ç‚İæURL‚ğw’è
+        // èª­è¾¼ã¿å…ˆURLã‚’æŒ‡å®š
         String useUrl;
         String area = sp.getString("AREA", "TDS");
 
-        // ƒfƒBƒYƒj[ƒV[
+        // ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ã‚·ãƒ¼
         if ("TDS".equals(area)) {
         	useUrl = this.tdsUrl;
         }
-        // ƒfƒBƒYƒj[ƒ‰ƒ“ƒh
+        // ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ãƒ©ãƒ³ãƒ‰
         else {
         	useUrl = this.tdlUrl;
         }
         
-        // JSONƒf[ƒ^‰ğÍ
+        // JSONãƒ‡ãƒ¼ã‚¿è§£æ
         this.jsonClient = new JSONClient(this, jsonListener);
         this.jsonClient.execute(useUrl);    	
     }
 
     /*
-     * uØ‘Övƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
+     * ã€Œåˆ‡æ›¿ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚
      */
     public void change(View v){
-    	Toast.makeText(this, "Ø‘Ö‚ª‰Ÿ‚³‚ê‚Ü‚µ‚½B", Toast.LENGTH_LONG).show();
+    	Toast.makeText(this, "åˆ‡æ›¿ãŒæŠ¼ã•ã‚Œã¾ã—ãŸã€‚", Toast.LENGTH_LONG).show();
     	
-    	// ƒCƒ“ƒeƒ“ƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+    	// ã‚¤ãƒ³ãƒ†ãƒ³ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
     	Intent intent = new Intent(main.this, sortMenu.class);
-    	// Ÿ‰æ–Ê‚ÌƒAƒNƒeƒBƒrƒeƒB‹N“®
+    	// æ¬¡ç”»é¢ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£èµ·å‹•
     	startActivityForResult( intent, 0);
     }
     
-    // startActivityForResult ‚Å‹N“®‚³‚¹‚½ƒAƒNƒeƒBƒrƒeƒB‚ª
-    // finish() ‚É‚æ‚è”jŠü‚³‚ê‚½‚Æ‚«‚ÉƒR[ƒ‹‚³‚ê‚é
-    // requestCode : startActivityForResult ‚Ì‘æ“ñˆø”‚Åw’è‚µ‚½’l‚ª“n‚³‚ê‚é
-    // resultCode : ‹N“®æ‚ÌActivity.setResult ‚Ì‘æˆêˆø”‚ª“n‚³‚ê‚é
-    // Intent data : ‹N“®æActivity‚©‚ç‘—‚ç‚ê‚Ä‚­‚é Intent
+    // startActivityForResult ã§èµ·å‹•ã•ã›ãŸã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ãŒ
+    // finish() ã«ã‚ˆã‚Šç ´æ£„ã•ã‚ŒãŸã¨ãã«ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
+    // requestCode : startActivityForResult ã®ç¬¬äºŒå¼•æ•°ã§æŒ‡å®šã—ãŸå€¤ãŒæ¸¡ã•ã‚Œã‚‹
+    // resultCode : èµ·å‹•å…ˆã®Activity.setResult ã®ç¬¬ä¸€å¼•æ•°ãŒæ¸¡ã•ã‚Œã‚‹
+    // Intent data : èµ·å‹•å…ˆActivityã‹ã‚‰é€ã‚‰ã‚Œã¦ãã‚‹ Intent
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
@@ -173,21 +175,23 @@ public class main extends Activity {
     	case 0:
         if (resultCode == RESULT_OK) {
 
-        	// ƒ^ƒCƒgƒ‹ƒo[—p‚ÌƒGƒŠƒA–¼‚ğİ’è
+        	// ã‚¿ã‚¤ãƒˆãƒ«ãƒãƒ¼ç”¨ã®ã‚¨ãƒªã‚¢åã‚’è¨­å®š
         	this._setTitleBarName();
 
-        	// Ä“Ç‚İ‚İ
+        	// çµã‚Šè¾¼ã¿ã‚’é©ç”¨
+        	
+        	// å†èª­ã¿è¾¼ã¿
         	this._reload();
         }
 
-        // ƒoƒbƒNƒ{ƒ^ƒ““™
+        // ãƒãƒƒã‚¯ãƒœã‚¿ãƒ³ç­‰
     	default:
     		break;
     	}
     }
     
     /*
-     * ‘Ò‚¿ŠÔJSONƒf[ƒ^‚©‚ç‘Ò‚¿ŠÔƒŠƒXƒg‚ğ¶¬
+     * å¾…ã¡æ™‚é–“JSONãƒ‡ãƒ¼ã‚¿ã‹ã‚‰å¾…ã¡æ™‚é–“ãƒªã‚¹ãƒˆã‚’ç”Ÿæˆ
      */
     private void createAtrcList(JSONObject rootJson) {
 
@@ -205,7 +209,7 @@ public class main extends Activity {
 				JSONObject o = jsons.getJSONObject(i);
 				atrcData tmp = new atrcData();
 
-				// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“î•ñ‚ğæ“¾
+				// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’å–å¾—
 				tmp.setArea_name(o.getString("area_name"));
 				tmp.setAtrc_name(o.getString("atrc_name"));
 				tmp.setFp(o.getString("fp"));
@@ -213,7 +217,7 @@ public class main extends Activity {
 				tmp.setUpdate(o.getString("update"));
 				tmp.setWait(o.getString("wait"));
 				
-				// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“ƒŠƒXƒg‚Ö’Ç‰Á
+				// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒªã‚¹ãƒˆã¸è¿½åŠ 
 				this.atrcList.add(tmp);
 				
 				Log.d("area_name", o.getString("area_name"));
@@ -231,22 +235,85 @@ public class main extends Activity {
     }
     
     /*
-     * i‚è‚İE•À‚×‘Ö‚¦ğŒ‚ğİ’è‚·‚éB
+     * çµã‚Šè¾¼ã¿ãƒ»ä¸¦ã¹æ›¿ãˆæ¡ä»¶ã‚’è¨­å®šã™ã‚‹ã€‚
      */
     private void setFilter() {
-    	//TODO –¢À‘•
+
+        // SharedPreferencesã®å–å¾—
+        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+
+        // Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã®ã¿è¡¨ç¤º
+        if ("ON".equals(sp.getString("ATRC", "OFF"))) {
+        	this._MyAtrcOnly();
+        }
+
+        // ä¸¦ã³æ›¿ãˆ(0:æŒ‡å®šãªã—, 1ï¼šå¾…ã¡æ™‚é–“ã®çŸ­ã„é †, 2ï¼›æ›´æ–°æ™‚é–“ãŒæ–°ã—ã„é †, 3ï¼šFPå¯¾å¿œã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã®ã¿)
+        int sortNum = sp.getInt("SORT", 0);
+        switch (sortNum) {
+        case 1:
+        	this._waitTimeShortOrder();
+        	break;
+        case 2:
+        	this._updateTimeNewOrder();
+        	break;
+        case 3:
+        	this._fpAtrcOnly();
+        	break;
+        default:
+        	break;
+        }
+    	
     }
     
-	/*
-	 *  ‘Ò‚¿ŠÔƒŠƒXƒg‚Ì¶¬‚ğs‚¤
+    /*
+     * ä¸¦ã³æ›¿ãˆï¼šå¾…ã¡æ™‚é–“ã®çŸ­ã„é †
+     */
+    private void _waitTimeShortOrder() {
+    	
+    }
+
+    /*
+     * ä¸¦ã³æ›¿ãˆï¼šæ›´æ–°æ™‚é–“ã®æ–°ã—ã„é †
+     */
+    private void _updateTimeNewOrder() {
+    	//TODO æœªå®Ÿè£…
+    }
+    
+    /*
+     * çµã‚Šè¾¼ã¿ï¼šãƒ•ã‚¡ã‚¹ãƒˆãƒ‘ã‚¹å¯¾å¿œã®ã¿
+     */
+    private void _fpAtrcOnly() {
+    	//TODO æœªå®Ÿè£…
+    }
+    
+    /*
+     * çµã‚Šè¾¼ã¿ï¼šMYã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã®ã¿
+     */
+    private void _MyAtrcOnly() {
+    	//TODO æœªå®Ÿè£…
+
+    	// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã«ç™»éŒ²ã•ã‚Œã¦ã„ãªã„ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã¯å‰Šé™¤ã™ã‚‹
+    	int i = 0;
+    	while(i < this.atrcList.size()) {
+    		atrcData tmp = this.atrcList.get(i);
+    		if (!this._isMyAttraction(tmp.getAtrc_name())) {
+    			this.atrcList.remove(i);
+    		}
+    		else {
+    			i++;
+    		}
+    	}
+    }
+
+    /*
+	 *  å¾…ã¡æ™‚é–“ãƒªã‚¹ãƒˆã®ç”Ÿæˆã‚’è¡Œã†
 	 */
 	private void initAtrcList() {
 
-		// ƒf[ƒ^‚ğŠi”[‚·‚é‚½‚ß‚ÌArrayList‚ğéŒ¾
-        ArrayList<HashMap<String, String>> data
-			= new ArrayList<HashMap<String, String>>();
+		// ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ãŸã‚ã®ArrayListã‚’å®£è¨€
+        data = new ArrayList<HashMap<String, String>>();
 
-		// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“”•ªŒJ‚è•Ô‚µ
+		// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æ•°åˆ†ç¹°ã‚Šè¿”ã—
         for(int i = 0; i< this.atrcList.size(); i++){
         	
         	HashMap<String, String> map
@@ -256,38 +323,191 @@ public class main extends Activity {
 
         	Log.d("DEBUG", tmp.getArea_name());
         	
-        	// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“Šeƒf[ƒ^‚ğmap‚É‘ã“ü
+        	// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å„ãƒ‡ãƒ¼ã‚¿ã‚’mapã«ä»£å…¥
         	map.put("area_name", tmp.getArea_name());
         	map.put("atrc_name", tmp.getAtrc_name());
         	map.put("fp", tmp.getFp());
         	map.put("run", tmp.getRun());
         	map.put("update", tmp.getUpdate());
         	map.put("wait", tmp.getWait());
-        	map.put("my_attr_flg", String.valueOf(tmp.getMy_attr_flg()));
-        	
-        	// ì¬‚µ‚½map‚ğdata‚É’Ç‰Á
+        	map.put("bookmark", String.valueOf(tmp.getBookmark()));
+
+        	// ä½œæˆã—ãŸmapã‚’dataã«è¿½åŠ 
         	data.add(map);
          }
-
-        /*
-		 * ì¬‚µ‚½data‚ÆƒJƒXƒ^ƒ}ƒCƒY‚µ‚½ƒŒƒCƒAƒEƒgrow.xml‚ğ
-         * •R•t‚¯‚½CustomAdapter‚ğì¬‚·‚é
-         */
-        CustomAdapter ca = new CustomAdapter(this, data, R.layout.row,
-        		new String[]{"atrc_name", "fp", "run", "update", "wait"},
-        		new int[]{R.id.atrc_name, R.id.fp, R.id.run, R.id.update, R.id.wait}
-        );
         
-        // activity_main.xml‚ÌListView‚ÉƒJƒXƒ^ƒ€ƒAƒ_ƒvƒ^‚ğƒZƒbƒg
-        ListView lv = (ListView)findViewById(R.id.atrcList);
-        lv.setAdapter(ca);		
+        /*
+		 * ä½œæˆã—ãŸdataã¨ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºã—ãŸãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆrow.xmlã‚’
+         * ç´ä»˜ã‘ãŸCustomAdapterã‚’ä½œæˆã™ã‚‹
+         */
+        this.ca = new CustomAdapter(this, data, R.layout.row,
+        		new String[]{"atrc_name", "fp", "run", "update", "wait", "bookmark"},
+        		new int[]{R.id.atrc_name, R.id.fp, R.id.run, R.id.update, R.id.wait, R.id.bookmark}
+        );
+
+        // activity_main.xmlã®ListViewã«ã‚«ã‚¹ã‚¿ãƒ ã‚¢ãƒ€ãƒ—ã‚¿ã‚’ã‚»ãƒƒãƒˆ
+        lv = (ListView)findViewById(R.id.atrcList);
+        lv.setAdapter(ca);
+        
+        // ãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²ã™ã‚‹
+        lv.setOnItemClickListener(this);
 	}
-	// SimpleAdapter‚ğŒp³‚µ‚½CustomAdapter‚ğì¬‚·‚é
-	public class CustomAdapter extends SimpleAdapter {
+	
+	/*
+	 * ã‚»ãƒ«ãŒé¸æŠã•ã‚ŒãŸéš›ã®å‡¦ç†
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+		// æœ€å¾Œã«é¸æŠã•ã‚ŒãŸãƒªã‚¹ãƒˆç•ªå·ã‚’ä¿æŒ
+		this._pos = position;
+		
+		// é¸æŠã•ã‚ŒãŸã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±
+		atrcData atrcData_tmp = this.atrcList.get(position);
+
+//		Log.d("onItemClick", "position:" + String.valueOf(position));
+//		Toast.makeText(this, atrcData_tmp.getAtrc_name(), Toast.LENGTH_LONG).show();
+
+		// Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ç™»éŒ²ç¢ºèªãƒ€ã‚¤ã‚¢ãƒ­ã‚°
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’è¨­å®šã—ã¾ã™
+        alertDialogBuilder.setTitle("ç¢ºèª");
+        
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™
+        String q;
+        String atrcName = atrcData_tmp.getAtrc_name();
+        // ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚¿ã‚¤ãƒ—ç¨®é¡ã‚’è¨­å®š
+        if (_isMyAttraction(atrcName)) {
+        	q = atrcName +"Â¥nã‚’Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰è§£é™¤ã—ã¾ã™ã‹ï¼Ÿ";
+        }
+        else {
+        	q = atrcName + "Â¥nã‚’Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã«ç™»éŒ²ã—ã¾ã™ã‹ï¼Ÿ";        	
+        }
+        
+        alertDialogBuilder.setMessage(q);
+        
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®è‚¯å®šãƒœã‚¿ãƒ³ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²ã—ã¾ã™
+        alertDialogBuilder.setPositiveButton("ï¼¯ï¼«",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        // SharedPreferencesã®å–å¾—
+                        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+                    	
+                    	// é¸æŠã•ã‚ŒãŸã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±
+                    	atrcData tmp = atrcList.get(_pos);
+
+                		// ãƒ­ãƒ¼ã‚«ãƒ«ã®ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’æ›´æ–°
+                		atrcList.set(_pos, tmp);
+                		
+	                	// æ›´æ–°ã—ãŸã„ã‚»ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ–°ãŸã«ä½œæˆ
+                    	HashMap<String, String> map = new HashMap<String, String>();
+	                	map.put("area_name", tmp.getArea_name());
+	                	map.put("atrc_name", tmp.getAtrc_name());
+	                	map.put("fp", tmp.getFp());
+	                	map.put("run", tmp.getRun());
+	                	map.put("update", tmp.getUpdate());
+	                	map.put("wait", tmp.getWait());
+	                	
+	                	// ä½œæˆã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤ã—ã€å‰Šé™¤ã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«è¿½åŠ ã‚’è¡Œã†ã€‚
+	                	data.remove(_pos);
+
+                    	// åˆ‡ã‚Šæ›¿ãˆã‚‹ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ãƒ¢ãƒ¼ãƒ‰
+                    	String mode;
+
+                    	// æ—¢ã«ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ç™»éŒ²æ¸ˆã¿ã®ãŸã‚è§£é™¤
+            			if (_isMyAttraction(tmp.getAtrc_name())) {
+            				mode = "OFF";
+            			}
+            			// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã«ç™»éŒ²
+            			else {
+            				mode = "ON";
+            			}
+
+                		// SharedPreferenceã«ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯æƒ…å ±ã‚’ä¿å­˜
+                		_saveMyAttraction(tmp.getAtrc_name(), mode);
+
+	                	// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯è¡¨ç¤ºé™å®šã‹ã¤ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯è§£é™¤ã®å ´åˆã¯ã‚»ãƒ«ã‚’è¿½åŠ ã—ãªã„ã€‚
+                        // Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã®ã¿è¡¨ç¤º
+                        if ("ON".equals(sp.getString("ATRC", "OFF")) &&
+                        	"OFF".equals(mode)) {
+
+                        	// ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼ç”¨ã®ãƒ‡ãƒ¼ã‚¿ãŒï¼‘ã¤æ¸›ã‚‹ãŸã‚ã€ãƒ­ãƒ¼ã‚«ãƒ«ã®ãƒ‡ãƒ¼ã‚¿ã‚‚ï¼‘ã¤å‰Šé™¤ã™ã‚‹
+                        	atrcList.remove(_pos);
+                        }
+                        else {
+                        	// ListViewæ›´æ–°ã®ãŸã‚ã€å‰Šé™¤â¡è¿½åŠ ã‚’è¡Œã†ã€‚
+                        	data.add(_pos, map);
+                        }
+
+	                	// ã‚¢ãƒ€ãƒ—ã‚¿ã«ãƒ‡ãƒ¼ã‚¿å¤‰æ›´ã‚’é€šçŸ¥
+                		ca.notifyDataSetChanged();
+                		
+                		// ãƒªã‚¹ãƒˆãƒ“ãƒ¥ãƒ¼ã®æç”»ã‚’æ›´æ–°
+                		lv.invalidateViews();
+                    }
+                });
+        
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ä¸­ç«‹ãƒœã‚¿ãƒ³ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸæ™‚ã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²ã—ã¾ã™
+        alertDialogBuilder.setNeutralButton("ã‚­ãƒ£ãƒ³ã‚»ãƒ«",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã®ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãŒå¯èƒ½ã‹ã©ã†ã‹ã‚’è¨­å®šã—ã¾ã™
+        alertDialogBuilder.setCancelable(true);
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        
+        // ã‚¢ãƒ©ãƒ¼ãƒˆãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’è¡¨ç¤ºã—ã¾ã™
+        alertDialog.show();
+		
+	}
+	
+	/*
+	 * ãƒ­ãƒ¼ã‚«ãƒ«ã«Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹
+	 * 
+	 * @param String atrcName ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å
+	 * @param String mode "ON" or "OFF"
+	 */
+	private void _saveMyAttraction(String atrcName, String mode) {
+
+		// SharedPreferencesã®å–å¾—
+        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(atrcName, mode);
+        editor.commit();
+	}
+	
+	/*
+	 * ãƒ­ãƒ¼ã‚«ãƒ«ã‚ˆã‚ŠæŒ‡å®šã•ã‚ŒãŸMyã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’å–å¾—ã™ã‚‹
+	 * 
+	 * @param String atrcName ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å
+	 * @return Boolean true  Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã§ä¿å­˜ã•ã‚Œã¦ã„ã‚‹
+	 *                 false Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã§ä¿å­˜ã•ã‚Œã¦ã„ãªã„
+	 */
+	private Boolean _isMyAttraction(String atrcName) {
+
+		// SharedPreferencesã®å–å¾—
+        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+        if ("ON".equals(sp.getString(atrcName, "OFF"))) {
+        	return true;
+        }
+        else {
+        	return false;
+        }
+	}	
+	
+	/*
+	 * SimpleAdapterã‚’ç¶™æ‰¿ã—ãŸCustomAdapterã‚’ä½œæˆã™ã‚‹
+	 */
+	public class CustomAdapter extends SimpleAdapter{
 		
 		LayoutInflater mLayoutInflater;
 		
-		// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		public CustomAdapter( Context context,
 							  List<? extends Map<String, ?>> data,
 									  int resource,
@@ -299,42 +519,51 @@ public class main extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			mLayoutInflater = LayoutInflater.from( getBaseContext() );
 			
-			// ƒŒƒCƒAƒEƒg‚Éurow.xmlv‚ğ•R‚Ã‚¯‚é
+			// ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã«ã€Œrow.xmlã€ã‚’ç´ã¥ã‘ã‚‹
 			convertView = mLayoutInflater.inflate(R.layout.row, parent, false);
 			ListView listView = (ListView)parent;
 			
 			@SuppressWarnings("unchecked")
-			// ŠY“–ˆÊ’u‚Ìƒf[ƒ^‚ğæ“¾
+			// è©²å½“ä½ç½®ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 			Map<String, Object> data = (Map<String, Object>) listView.getItemAtPosition(position);
 
-			// MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“ƒAƒCƒRƒ“
-			
-			// ƒp[ƒNƒGƒŠƒAƒl[ƒ€
-			//
+			// ãƒ‘ãƒ¼ã‚¯ã‚¨ãƒªã‚¢ãƒãƒ¼ãƒ 
+			// TODO è€ƒæ…®ä¸è¶³
 
-			// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“–¼
+			// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å
 			TextView atrc_name = (TextView)convertView.findViewById(R.id.atrc_name);
 			atrc_name.setText((String)data.get("atrc_name"));
-			
-			// FP”­Œ”Œã‚Ì—˜—p‰Â”\ŠÔ
+
+			// ãƒ–ãƒƒã‚¯ãƒãƒ¼ã‚¯ã‚¢ã‚¤ã‚³ãƒ³
+			ImageView bookmark = (ImageView)convertView.findViewById(R.id.bookmark);
+
+			// ç©ºã®å ´åˆã¯è¡¨ç¤º
+			if (_isMyAttraction((String)data.get("atrc_name"))) {
+				bookmark.setVisibility(View.VISIBLE);
+			}
+			else {
+				bookmark.setVisibility(View.INVISIBLE);
+			}
+
+			// FPç™ºåˆ¸å¾Œã®åˆ©ç”¨å¯èƒ½æ™‚é–“
 			TextView fp = (TextView)convertView.findViewById(R.id.fp);
 			String fp_tmp = (String)data.get("fp");
 
-			// FPƒpƒXƒAƒCƒRƒ“
+			// FPãƒ‘ã‚¹ã‚¢ã‚¤ã‚³ãƒ³
 			ImageView fpIcon = (ImageView)convertView.findViewById(R.id.fpIcon);
 			if ("".equals(fp_tmp)) {
 				
-				// FPƒAƒCƒRƒ“‚ğ”ñ•\¦(ŠÔ‚Í‹l‚ß‚È‚¢)
+				// FPã‚¢ã‚¤ã‚³ãƒ³ã‚’éè¡¨ç¤º(é–“ã¯è©°ã‚ãªã„)
 				fpIcon.setVisibility(View.INVISIBLE);
 
-				// FPŠÔ‚ğ”ñ•\¦(ŠÔ‚Í‹l‚ß‚È‚¢)
+				// FPæ™‚é–“ã‚’éè¡¨ç¤º(é–“ã¯è©°ã‚ãªã„)
 				fp.setVisibility(View.INVISIBLE);
 			}
 			else {
 				fp.setText(fp_tmp);
 				
-				// FP”­Œ”I—¹‚µ‚Ä‚¢‚éê‡‚ÍƒAƒCƒRƒ“‚ğØ‚è‘Ö‚¦‚é
-				if ("Œ»İ”­Œ”‚µ‚Ä‚¨‚è‚Ü‚¹‚ñ".equals(fp_tmp)) {
+				// FPç™ºåˆ¸çµ‚äº†ã—ã¦ã„ã‚‹å ´åˆã¯ã‚¢ã‚¤ã‚³ãƒ³ã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹
+				if ("ç¾åœ¨ç™ºåˆ¸ã—ã¦ãŠã‚Šã¾ã›ã‚“".equals(fp_tmp)) {
 					fpIcon.setImageResource(R.drawable.icon_30x20_fp_off);
 				}
 				else{
@@ -343,39 +572,39 @@ public class main extends Activity {
 				
 			}
 			
-			// ‰^‰có‹µ
+			// é‹å–¶çŠ¶æ³
 			TextView run = (TextView)convertView.findViewById(R.id.run);
 			String run_tmp = (String)data.get("run");
 			run.setText(run_tmp);
 
-			// XVŠÔ
+			// æ›´æ–°æ™‚é–“
 			TextView update = (TextView)convertView.findViewById(R.id.update);
 			String update_tmp = (String)data.get("update");
 
-			// ‹ó‚¾‚Á‚½ê‡‚Í”ñ•\¦(ŠÔ‚ğ‹l‚ß‚é)
+			// ç©ºã ã£ãŸå ´åˆã¯éè¡¨ç¤º(é–“ã‚’è©°ã‚ã‚‹)
 			if ("".equals(update_tmp)){
 				update.setVisibility(View.GONE);				
 			}
 			else {
-				update.setText("(XVŠÔ " + update_tmp + ")");				
+				update.setText("(æ›´æ–°æ™‚é–“ " + update_tmp + ")");				
 			}
 			
 			
-			// ‘Ò‚¿ŠÔ
+			// å¾…ã¡æ™‚é–“
 			TextView wait = (TextView)convertView.findViewById(R.id.wait);
 			String wait_tmp = (String)data.get("wait"); 
 
-			// ‹ó‚¾‚Á‚½ê‡‚Í‚O‚ğƒZƒbƒg
+			// ç©ºã ã£ãŸå ´åˆã¯ï¼ã‚’ã‚»ãƒƒãƒˆ
 			if ("".equals(wait_tmp)){
 				wait_tmp = "0";
 			}
 
-			// u‰^‰c’†v‚©‚ÂXVŠÔ‚ª‚ ‚éê‡‚Ì‚İ•\¦B
-			if ("‰^‰c’†".equals(run_tmp)) {
+			// ã€Œé‹å–¶ä¸­ã€ã‹ã¤æ›´æ–°æ™‚é–“ãŒã‚ã‚‹å ´åˆã®ã¿è¡¨ç¤ºã€‚
+			if ("é‹å–¶ä¸­".equals(run_tmp)) {
 				wait.setText(wait_tmp);
 			}
 			else {	
-				// ‘Ò‚¿ŠÔ‚ğ”ñ•\¦(ŠÔ‚ğ‹l‚ß‚é)
+				// å¾…ã¡æ™‚é–“ã‚’éè¡¨ç¤º(é–“ã‚’è©°ã‚ã‚‹)
 				TextView waitLabel1 = (TextView)convertView.findViewById(R.id.waitLabel1);
 				TextView waitLabel2 = (TextView)convertView.findViewById(R.id.waitLabel2);
 				waitLabel1.setVisibility(View.GONE);
@@ -383,7 +612,7 @@ public class main extends Activity {
 				waitLabel2.setVisibility(View.GONE);
 			}
 
-			// •\¦ƒtƒ‰ƒO
+			// è¡¨ç¤ºãƒ•ãƒ©ã‚°
 			//
 			
 			return convertView;
