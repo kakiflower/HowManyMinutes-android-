@@ -247,7 +247,12 @@ public class main extends Activity implements OnItemClickListener{
         	this._MyAtrcOnly();
         }
 
-        // 並び替え(0:指定なし, 1：待ち時間の短い順, 2；更新時間が新しい順, 3：FP対応アトラクションのみ)
+        // 待ち時間絞り込み(0：指定なし, 1：30分以内, 2：31分〜60分以内, 3：61分以降)
+    	this._waitTimeBetweenOrder();
+
+//        int waitTimeNum = sp.getInt("WAIT",0);
+        
+        // 並び替え(0：指定なし, 1：待ち時間の短い順, 2；更新時間が新しい順, 3：FP対応アトラクションのみ)
         int sortNum = sp.getInt("SORT", 0);
         switch (sortNum) {
         case 1:
@@ -264,12 +269,66 @@ public class main extends Activity implements OnItemClickListener{
         }
     	
     }
+    /*
+     * 待ち時間指定で絞り込み 
+     */
+    private void _waitTimeBetweenOrder() {
+
+    	int min;
+    	int max;
+    	
+        // SharedPreferencesの取得
+        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+
+        int waitTimeNum = sp.getInt("WAIT",0);
+        
+        // ３０分以内
+        if( waitTimeNum == 1){
+        	min = 0;
+        	max = 30;
+        }
+        // ３１分〜６０分以内
+        else if(waitTimeNum == 2) {
+        	min = 31;
+        	max = 60;
+        }
+        // ６１分以降
+        else if(waitTimeNum == 3) {
+        	min = 61;
+        	max = 999;        	
+        }
+        else {
+        // 未指定の場合
+        	return;
+        }
+        
+    	// 待ち時間が指定した時間帯以外の場合は非表示とする。
+    	int i = 0;
+    	while(i < this.atrcList.size()) {
+    		atrcData tmp = this.atrcList.get(i);
+    		int atrcTimeInt;
+    		String atrcTimeStr = tmp.getWait();
+    		if("".equals(atrcTimeStr)){
+    			atrcTimeInt = 0;
+    		}
+    		else {
+    			atrcTimeInt = Integer.valueOf(atrcTimeStr);
+    		}
+    		
+    		if (min <= atrcTimeInt && atrcTimeInt <= max) {
+    			i++;
+    		}
+    		else {
+    			this.atrcList.remove(i);
+    		}
+    	}
+    }
     
     /*
      * 並び替え：待ち時間の短い順
      */
     private void _waitTimeShortOrder() {
-    	
+    	//TODO 未実装
     }
 
     /*
@@ -283,14 +342,25 @@ public class main extends Activity implements OnItemClickListener{
      * 絞り込み：ファストパス対応のみ
      */
     private void _fpAtrcOnly() {
-    	//TODO 未実装
+
+    	// FP文言が空文字または「現在発券しておりません」のアトラクション情報は削除
+    	int i = 0;
+    	while(i < this.atrcList.size()) {
+    		atrcData tmp = this.atrcList.get(i);
+    		String fp_tmp = tmp.getFp();
+    		if ("".equals(fp_tmp) || "現在発券しておりません".equals(fp_tmp)) {
+    			this.atrcList.remove(i);
+    		}
+    		else {
+    			i++;
+    		}
+    	}
     }
     
     /*
      * 絞り込み：MYアトラクションのみ
      */
     private void _MyAtrcOnly() {
-    	//TODO 未実装
 
     	// ブックマークに登録されていないアトラクションは削除する
     	int i = 0;
