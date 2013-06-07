@@ -1,17 +1,19 @@
 package net.kakiflower.howmanyminutes;
 
+import java.util.Comparator;
+
 /*
- * ƒAƒgƒ‰ƒNƒVƒ‡ƒ“‘Ò‚¿ŠÔî•ñƒNƒ‰ƒX
+ * ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å¾…ã¡æ™‚é–“æƒ…å ±ã‚¯ãƒ©ã‚¹
  */
 public class atrcData {
 
-	private String area_name;		// ƒp[ƒNƒGƒŠƒA–¼
-	private String atrc_name;		// ƒAƒgƒ‰ƒNƒVƒ‡ƒ“–¼
-	private String fp;				// ƒtƒ@ƒXƒgƒpƒX”­Œ”Œã‚Ì—˜—p‰Â”\ŠÔ
-	private String run;				// ‰^‰có‹µ
-	private String update;			// XVŠÔ XX:XX
-	private String wait;			// ‘Ò‚¿ŠÔ XX:XX
-	private String bookmark;		// MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“ƒtƒ‰ƒO ON:w’è‚ ‚è , OFF:w’è‚È‚µ
+	private String area_name;		// ãƒ‘ãƒ¼ã‚¯ã‚¨ãƒªã‚¢å
+	private String atrc_name;		// ã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³å
+	private String fp;				// ãƒ•ã‚¡ã‚¹ãƒˆãƒ‘ã‚¹ç™ºåˆ¸å¾Œã®åˆ©ç”¨å¯èƒ½æ™‚é–“
+	private String run;				// é‹å–¶çŠ¶æ³
+	private String update;			// æ›´æ–°æ™‚é–“ XX:XX
+	private String wait;			// å¾…ã¡æ™‚é–“ XX:XX
+	private String bookmark;		// Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ãƒ•ãƒ©ã‚° ON:æŒ‡å®šã‚ã‚Š , OFF:æŒ‡å®šãªã—
 	
 	public String getArea_name() {
 		return area_name;

@@ -1,5 +1,7 @@
 package net.kakiflower.howmanyminutes;
 
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,44 +20,56 @@ public class sortMenu extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sort_menu);
         
-        // SharedPreferences‚Ìæ“¾
+        // SharedPreferencesã®å–å¾—
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
         
-        // ŠeƒAƒCƒeƒ€‚Ö‚Ì‰Šú’lİ’è
+        // å„ã‚¢ã‚¤ãƒ†ãƒ ã¸ã®åˆæœŸå€¤è¨­å®š
         initSortMenu();
     }
     
+    @Override
+    public void onStart() {
+      super.onStart();
+      EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+      super.onStop();
+      EasyTracker.getInstance().activityStop(this);
+    }
+
     /*
-     * i‚è‚İƒƒjƒ…[‚Ì‰Šú‰»
+     * çµã‚Šè¾¼ã¿ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®åˆæœŸåŒ–
      */
     private void initSortMenu() {
     	
-        // ƒGƒŠƒA
+        // ã‚¨ãƒªã‚¢
         String area = sp.getString("AREA", "TDS");
         if ("TDS".equals(area)) {
 
-        	// ƒfƒBƒYƒj[ƒV[‚ğ‘I‘ğó‘Ô‚É‚·‚é
+        	// ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ã‚·ãƒ¼ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
         	RadioButton radioArea = (RadioButton)findViewById(R.id.radioTds);
         	radioArea.setChecked(true);
         }
         
-        // MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“
+        // Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³
         String atrc = sp.getString("ATRC", "OFF");
         if ("ON".equals(atrc)) {
 
-        	// MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“‚Ì‚İ•\¦uONv‚Éİ’è
+        	// Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã®ã¿è¡¨ç¤ºã€ŒONã€ã«è¨­å®š
         	RadioButton radioAtrc = (RadioButton)findViewById(R.id.radioOn);
         	radioAtrc.setChecked(true);
         }
         
-        // ‘Ò‚¿ŠÔ‚Ìİ’è’l‚ğ”½‰f
+        // å¾…ã¡æ™‚é–“ã®è¨­å®šå€¤ã‚’åæ˜ 
         int wait_index = sp.getInt("WAIT", 0);
         if (wait_index != 0) {
         	Spinner spnrWait = (Spinner)findViewById(R.id.spinnerWait);
         	spnrWait.setSelection(wait_index);
         }
 
-        // •À‚Ñ‘Ö‚¦‚Ìİ’è’l‚ğ”½‰f
+        // ä¸¦ã³æ›¿ãˆã®è¨­å®šå€¤ã‚’åæ˜ 
         int sort_index = sp.getInt("SORT", 0);
         if (sort_index != 0) {
         	Spinner spnrSort = (Spinner)findViewById(R.id.spinnerSort);
@@ -64,59 +78,59 @@ public class sortMenu extends Activity {
     }
     
     /*
-     * uƒLƒƒƒ“ƒZƒ‹vƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
+     * ã€Œã‚­ãƒ£ãƒ³ã‚»ãƒ«ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚
      */
     public void pushCancel(View v){
     	finish();
     }
 
     /*
-     * u‚n‚jvƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
+     * ã€Œï¼¯ï¼«ã€ãƒœã‚¿ãƒ³ãŒæŠ¼ã•ã‚ŒãŸæ™‚
      */
     public void pushOK(View v){
 
-    	// ‘‚«‚İ—pShareadPreferences.EditorƒIƒuƒWƒFƒNƒg‚ğæ“¾
+    	// æ›¸ãè¾¼ã¿ç”¨ShareadPreferences.Editorã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–å¾—
     	SharedPreferences.Editor editor = sp.edit();
 
-    	// ŠeƒAƒCƒeƒ€‚²‚ÆA‰Šú’l‚Å‚È‚¢ê‡‚Í‘I‘ğ’l‚ğ•Û‘¶‚·‚é
+    	// å„ã‚¢ã‚¤ãƒ†ãƒ ã”ã¨ã€åˆæœŸå€¤ã§ãªã„å ´åˆã¯é¸æŠå€¤ã‚’ä¿å­˜ã™ã‚‹
     	
-    	// ƒGƒŠƒA
+    	// ã‚¨ãƒªã‚¢
     	RadioButton radioAreaTdl = (RadioButton)findViewById(R.id.radioTdl);
 //    	RadioButton radioAreaTds = (RadioButton)findViewById(R.id.radioTds);
 
     	if (radioAreaTdl.isChecked()) {
-        	Log.d("area", "ƒfƒBƒYƒj[ƒ‰ƒ“ƒhw’è");
+        	Log.d("area", "ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ãƒ©ãƒ³ãƒ‰æŒ‡å®š");
         	editor.putString("AREA", "TDL");
     	}
     	else {
-        	Log.d("area","ƒfƒBƒYƒj[ƒV[w’è");    	
+        	Log.d("area","ãƒ‡ã‚£ã‚ºãƒ‹ãƒ¼ã‚·ãƒ¼æŒ‡å®š");    	
         	editor.putString("AREA", "TDS");
     	}
     	
-    	// MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“i‚è‚İ
+    	// Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³çµã‚Šè¾¼ã¿
     	RadioButton radioAtrcOff = (RadioButton)findViewById(R.id.radioOff);
 //    	RadioButton radioAtrcOn = (RadioButton)findViewById(R.id.radioOn);
 
     	if (radioAtrcOff.isChecked()) {
-        	Log.d("atrc", "MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“w’è‚È‚µ");    	
+        	Log.d("atrc", "Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æŒ‡å®šãªã—");    	
         	editor.putString("ATRC", "OFF");
     	}
     	else {
-        	Log.d("atrc", "MyƒAƒgƒ‰ƒNƒVƒ‡ƒ“w’è‚ ‚è");    	
+        	Log.d("atrc", "Myã‚¢ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³æŒ‡å®šã‚ã‚Š");    	
         	editor.putString("ATRC", "ON");
     	}
 
-    	// ŠÔw’è
+    	// æ™‚é–“æŒ‡å®š
     	Spinner spinWait = (Spinner)findViewById(R.id.spinnerWait);
     	Log.d("spinWait", String.valueOf(spinWait.getSelectedItemPosition()));
     	editor.putInt("WAIT", spinWait.getSelectedItemPosition());
     	
-    	// ƒ\[ƒgğŒ
+    	// ã‚½ãƒ¼ãƒˆæ¡ä»¶
     	Spinner spinSort = (Spinner)findViewById(R.id.spinnerSort);
     	Log.d("spinSort", String.valueOf(spinSort.getSelectedItemPosition()));
     	editor.putInt("SORT", spinSort.getSelectedItemPosition());
     	
-    	// ‘‚«‚İ‚ğI—¹
+    	// æ›¸ãè¾¼ã¿ã‚’çµ‚äº†
     	editor.commit();
 
     	setResult(RESULT_OK);

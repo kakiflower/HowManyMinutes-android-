@@ -1,12 +1,17 @@
 package net.kakiflower.howmanyminutes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.analytics.tracking.android.EasyTracker;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -90,6 +95,18 @@ public class main extends Activity implements OnItemClickListener{
     	this._reload();
 
     }
+
+    @Override
+    public void onStart() {
+      super.onStart();
+      EasyTracker.getInstance().activityStart(this);
+    }
+
+    @Override
+    public void onStop() {
+      super.onStop();
+      EasyTracker.getInstance().activityStop(this);
+    }
     
     /*
      * 「更新」ボタンが押された時
@@ -101,6 +118,13 @@ public class main extends Activity implements OnItemClickListener{
 
     	// 更新処理
     	this._reload();
+    	
+    	// 更新回数ログを収集
+        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+        int reload_num = sp.getInt("reload", 0);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("reload", reload_num++);
+    	EasyTracker.getTracker().sendEvent("action", "button_press", "reload", (long)reload_num);
     }
 
     /*
@@ -247,6 +271,15 @@ public class main extends Activity implements OnItemClickListener{
         	this._MyAtrcOnly();
         }
 
+    	// 解析タグ：ディズニーランド or ディズニーシー
+        if ("TDS".equals(sp.getString("AREA", "TDS"))) {
+        	EasyTracker.getTracker().sendEvent("filter", "area", "land", (long)0);
+        }
+        else {
+        	EasyTracker.getTracker().sendEvent("filter", "area", "sea", (long)0);
+        }
+
+        
         // 待ち時間絞り込み(0：指定なし, 1：30分以内, 2：31分〜60分以内, 3：61分以降)
     	this._waitTimeBetweenOrder();
 
@@ -269,6 +302,7 @@ public class main extends Activity implements OnItemClickListener{
         }
     	
     }
+    
     /*
      * 待ち時間指定で絞り込み 
      */
@@ -286,19 +320,27 @@ public class main extends Activity implements OnItemClickListener{
         if( waitTimeNum == 1){
         	min = 0;
         	max = 30;
+        	// 解析タグ
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_0_30", (long)0);
         }
         // ３１分〜６０分以内
         else if(waitTimeNum == 2) {
         	min = 31;
         	max = 60;
+        	// 解析タグ
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_30_60", (long)0);
         }
         // ６１分以降
         else if(waitTimeNum == 3) {
         	min = 61;
         	max = 999;        	
+        	// 解析タグ
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "60_over", (long)0);
         }
+    	// 未指定の場合
         else {
-        // 未指定の場合
+        	// 解析タグ
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "no_select", (long)0);
         	return;
         }
         
@@ -328,14 +370,18 @@ public class main extends Activity implements OnItemClickListener{
      * 並び替え：待ち時間の短い順
      */
     private void _waitTimeShortOrder() {
-    	//TODO 未実装
+    	Collections.sort(this.atrcList, new waitTimeComprator());    	
+    	// 解析タグ
+    	EasyTracker.getTracker().sendEvent("filter", "button_press", "wait_order", (long)0);
     }
 
     /*
      * 並び替え：更新時間の新しい順
      */
     private void _updateTimeNewOrder() {
-    	//TODO 未実装
+    	Collections.sort(this.atrcList, new updateTimeComprator());
+    	// 解析タグ
+    	EasyTracker.getTracker().sendEvent("filter", "button_press", "update_order", (long)0);
     }
     
     /*
@@ -343,18 +389,20 @@ public class main extends Activity implements OnItemClickListener{
      */
     private void _fpAtrcOnly() {
 
-    	// FP文言が空文字または「現在発券しておりません」のアトラクション情報は削除
+    	// FP文言が空文字(設定なし)のアトラクションを除外する。
     	int i = 0;
     	while(i < this.atrcList.size()) {
     		atrcData tmp = this.atrcList.get(i);
     		String fp_tmp = tmp.getFp();
-    		if ("".equals(fp_tmp) || "現在発券しておりません".equals(fp_tmp)) {
+    		if ("".equals(fp_tmp)) {
     			this.atrcList.remove(i);
     		}
     		else {
     			i++;
     		}
     	}
+    	// 解析タグ
+    	EasyTracker.getTracker().sendEvent("filter", "button_press", "fp_only", (long)0);
     }
     
     /*
@@ -373,8 +421,11 @@ public class main extends Activity implements OnItemClickListener{
     			i++;
     		}
     	}
+    	
+    	// 解析タグ：お気に入りのみ
+    	EasyTracker.getTracker().sendEvent("filter", "button_press", "bookmark_only", (long)0);
     }
-
+    
     /*
 	 *  待ち時間リストの生成を行う
 	 */
@@ -688,4 +739,76 @@ public class main extends Activity implements OnItemClickListener{
 			return convertView;
 		}
 	}
+	
+	/*
+	 * 待ち時間の短い順にソートする処理を実装
+	 */
+	public class waitTimeComprator implements Comparator<atrcData>{
+		
+		@Override
+		public int compare(atrcData lhs, atrcData rhs) {
+			atrcData atrc1 = (atrcData)lhs;
+			atrcData atrc2 = (atrcData)rhs;
+			
+			// 待ち時間データが空の場合は０分とする
+			int wait1 = atrc1.getWait().equals("") ? 0 : Integer.parseInt(atrc1.getWait());
+			int wait2 = atrc2.getWait().equals("") ? 0 : Integer.parseInt(atrc2.getWait());
+			
+			return wait1 < wait2 ? -1 : 1;
+		}
+	}
+
+	/*
+	 * 更新時間の新しい順にソート
+	 */
+	public class updateTimeComprator implements Comparator<atrcData>{
+		
+		@Override
+		public int compare(atrcData lhs, atrcData rhs) {
+			atrcData atrc1 = (atrcData)lhs;
+			atrcData atrc2 = (atrcData)rhs;
+			
+			// 待ち時間データが空の場合は０分とする
+			int hour1;
+			int hour2;
+			int minute1;
+			int minute2;
+			
+			if ("".equals(atrc1.getUpdate())) {
+				hour1 = 0;
+				minute1 = 0;
+			}
+			else {
+				String[] tmp = atrc1.getUpdate().split(":");
+				hour1 = Integer.parseInt(tmp[0]);
+				minute1 = Integer.parseInt(tmp[1]);
+			}
+
+			if ("".equals(atrc2.getUpdate())) {
+				hour2 = 0;
+				minute2 = 0;
+			}
+			else {
+				String[] tmp = atrc2.getUpdate().split(":");
+				hour2 = Integer.parseInt(tmp[0]);
+				minute2 = Integer.parseInt(tmp[1]);
+			}
+
+			/*
+			int hour1 = atrc1.getUpdate().equals("") ? 0 : Integer.parseInt(atrc1.getUpdate().substring(0, 1)); 
+			int minute1 = atrc1.getUpdate().equals("") ? 0 : Integer.parseInt(atrc1.getUpdate().substring(3, 4));
+			int hour2 = atrc2.getUpdate().equals("") ? 0 : Integer.parseInt(atrc2.getUpdate().substring(0, 1)); 
+			int minute2 = atrc2.getUpdate().equals("") ? 0 : Integer.parseInt(atrc2.getUpdate().substring(3, 4));
+			*/
+			Log.d("update1", atrc1.getUpdate());
+			Log.d("update1", atrc2.getUpdate());
+			Log.d("hour1", String.valueOf(hour1));
+			Log.d("minute1", String.valueOf(minute1));
+			Log.d("hour2", String.valueOf(hour2));
+			Log.d("minute2", String.valueOf(minute2));
+			
+			return (hour1*60+minute1) < (hour2*60+minute2) ? 1 : -1;
+		}
+	}
+
 }
