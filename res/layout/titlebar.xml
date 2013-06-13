@@ -12,15 +12,6 @@
             android:background="@drawable/btn_60x30_reload"
             android:onClick="reload" />
 
-        <TextView
-            android:id="@+id/titleBarAreaName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="1"
-            android:text="ディズニーランド"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
         <ImageButton
             android:id="@+id/btnChange"
             style="?android:attr/buttonStyleSmall"
@@ -29,5 +20,12 @@
             android:layout_marginTop="5px"
             android:background="@drawable/btn_60x30_change"
             android:onClick="change" />
- 
+
+        <TextView
+            android:id="@+id/titleBarAreaName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        
     </LinearLayout>

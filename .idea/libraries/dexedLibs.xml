@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="dexedLibs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/nendSDK-2.1.0-dc842ab03afeb1948778a4c39da6fc4b.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/libGoogleAnalyticsV2-4cac79c6dd318c0296116ed58f56d371.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/annotations-5f34b6f223ad04aea30e0abe05622369.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/dexedLibs/android-support-v4-4dbc00bb98629dd3bfd4ade8b81f34bd.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

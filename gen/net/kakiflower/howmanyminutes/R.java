@@ -9,8 +9,12 @@ package net.kakiflower.howmanyminutes;
 
 public final class R {
     public static final class array {
-        public static final int sort_list=0x7f070001;
+        public static final int area_list=0x7f070004;
+        public static final int area_list_values=0x7f070005;
+        public static final int sort_list=0x7f070002;
+        public static final int sort_list_values=0x7f070003;
         public static final int wait_list=0x7f070000;
+        public static final int wait_list_values=0x7f070001;
     }
     public static final class attr {
     }
@@ -48,7 +52,7 @@ public final class R {
         public static final int atrcList=0x7f0a0000;
         public static final int atrc_name=0x7f0a0012;
         public static final int bookmark=0x7f0a0011;
-        public static final int btnChange=0x7f0a001b;
+        public static final int btnChange=0x7f0a001a;
         public static final int btnReload=0x7f0a0019;
         public static final int button1=0x7f0a000e;
         public static final int button2=0x7f0a000f;
@@ -69,7 +73,7 @@ public final class R {
         public static final int textView2=0x7f0a000a;
         public static final int textView3=0x7f0a000c;
         public static final int textView4=0x7f0a0006;
-        public static final int titleBarAreaName=0x7f0a001a;
+        public static final int titleBarAreaName=0x7f0a001b;
         public static final int update=0x7f0a0018;
         public static final int wait=0x7f0a0016;
         public static final int waitLabel1=0x7f0a0015;
@@ -78,9 +82,10 @@ public final class R {
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_sort_menu=0x7f030001;
-        public static final int row=0x7f030002;
-        public static final int titlebar=0x7f030003;
-        public static final int titlebar_sort_menu=0x7f030004;
+        public static final int filter=0x7f030002;
+        public static final int row=0x7f030003;
+        public static final int titlebar=0x7f030004;
+        public static final int titlebar_sort_menu=0x7f030005;
     }
     public static final class menu {
         public static final int activity_main=0x7f090000;

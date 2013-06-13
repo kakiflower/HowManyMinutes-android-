@@ -1,31 +1,91 @@
 package net.kakiflower.howmanyminutes;
 
-import com.google.analytics.tracking.android.EasyTracker;
-
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 
-public class sortMenu extends Activity {
+import com.google.analytics.tracking.android.EasyTracker;
+
+public class sortMenu extends PreferenceActivity implements OnSharedPreferenceChangeListener{
 
 	public SharedPreferences sp;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sort_menu);
+		addPreferencesFromResource(R.layout.filter);
         
         // SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
-        
+
+		// エリア
+//		ListPreference areaPref = (ListPreference)getPreferenceScreen().findPreference("AREA");
+		ListPreference areaPref = (ListPreference)findPreference("AREA");
+		if (null == areaPref.getValue()) {
+			areaPref.setDefaultValue("area_tdl");
+			areaPref.setSummary("ディズニーランド");
+		}
+		else {
+			areaPref.setSummary(areaPref.getEntry());
+		}
+
+		// 待ち時間
+//		ListPreference waitPref = (ListPreference)getPreferenceScreen().findPreference("WAIT");
+		ListPreference waitPref = (ListPreference)findPreference("WAIT");
+		if (null == waitPref.getValue()) {
+			waitPref.setDefaultValue("wait_not");
+			waitPref.setSummary("指定なし");
+		}
+		else {
+			waitPref.setSummary(waitPref.getEntry());
+		}
+		
+		// 条件で並べ替え
+//		ListPreference sortPref = (ListPreference)getPreferenceScreen().findPreference("SORT");
+		ListPreference sortPref = (ListPreference)findPreference("SORT");
+		if (null == sortPref.getValue()) {
+			sortPref.setDefaultValue("sort_not");			
+			sortPref.setSummary("指定なし");
+		}
+		else {
+			sortPref.setSummary(sortPref.getEntry());
+		}
+
         // 各アイテムへの初期値設定
-        initSortMenu();
+//        initSortMenu();
     }
+
+    /*
+     * ListPreferenceのサマリーを選択されたアイテムに差し替える
+     * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
+     */
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,  String key) {
+		
+		// エリア
+		if (key.equals("AREA")) {
+			ListPreference areaPref = (ListPreference)getPreferenceScreen().findPreference("AREA");
+			areaPref.setSummary(areaPref.getEntry());
+		}
+		// 待ち時間
+		else if (key.equals("WAIT")) {
+			ListPreference waitPref = (ListPreference)getPreferenceScreen().findPreference("WAIT");
+			waitPref.setSummary(waitPref.getEntry());
+		}
+		
+		// 条件で並べ替え
+		else if (key.equals("SORT")) {
+			ListPreference sortPref = (ListPreference)getPreferenceScreen().findPreference("SORT");
+			sortPref.setSummary(sortPref.getEntry());
+		}
+	}
+
     
     @Override
     public void onStart() {
@@ -39,44 +99,18 @@ public class sortMenu extends Activity {
       EasyTracker.getInstance().activityStop(this);
     }
 
-    /*
-     * 絞り込みメニューの初期化
-     */
-    private void initSortMenu() {
-    	
-        // エリア
-        String area = sp.getString("AREA", "TDS");
-        if ("TDS".equals(area)) {
-
-        	// ディズニーシーを選択状態にする
-        	RadioButton radioArea = (RadioButton)findViewById(R.id.radioTds);
-        	radioArea.setChecked(true);
-        }
+	@Override  
+	protected void onResume() {  
+	    super.onResume();  
+	    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);  
+	}  
+	   
+	@Override  
+	protected void onPause() {  
+	    super.onPause();  
+	    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);  
+	}  
         
-        // Myアトラクション
-        String atrc = sp.getString("ATRC", "OFF");
-        if ("ON".equals(atrc)) {
-
-        	// Myアトラクションのみ表示「ON」に設定
-        	RadioButton radioAtrc = (RadioButton)findViewById(R.id.radioOn);
-        	radioAtrc.setChecked(true);
-        }
-        
-        // 待ち時間の設定値を反映
-        int wait_index = sp.getInt("WAIT", 0);
-        if (wait_index != 0) {
-        	Spinner spnrWait = (Spinner)findViewById(R.id.spinnerWait);
-        	spnrWait.setSelection(wait_index);
-        }
-
-        // 並び替えの設定値を反映
-        int sort_index = sp.getInt("SORT", 0);
-        if (sort_index != 0) {
-        	Spinner spnrSort = (Spinner)findViewById(R.id.spinnerSort);
-        	spnrSort.setSelection(sort_index);
-        }
-    }
-    
     /*
      * 「キャンセル」ボタンが押された時
      */
@@ -89,6 +123,8 @@ public class sortMenu extends Activity {
      */
     public void pushOK(View v){
 
+    	// TODO:ラジオボタン、スピナー取得をなくす。
+    	
     	// 書き込み用ShareadPreferences.Editorオブジェクトを取得
     	SharedPreferences.Editor editor = sp.edit();
 

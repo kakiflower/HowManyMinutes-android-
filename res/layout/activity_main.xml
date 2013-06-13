@@ -18,9 +18,8 @@
 			android:layout_height="wrap_content"
 			/>
 	</LinearLayout>
-		
 	<!-- 広告 -->
-	<LinearLayout
+ 	<LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 		android:gravity="bottom|center">
@@ -32,6 +31,5 @@
             NendApiKey="c89fc14808069f0509b9c2decfc8e72e58282331"
             NendSpotId="58424"
 			/>
-    </LinearLayout>	
-		
+    </LinearLayout>
 </LinearLayout>

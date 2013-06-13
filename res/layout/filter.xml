@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+
+	
+		<CheckBoxPreference
+		android:key="BOOKMARK"
+		android:title="お気に入りのみ表示"
+		android:summaryOn="チェックしました"
+        android:summaryOff="チェックしていません"/>
+
+		<ListPreference
+		android:key="AREA"
+		android:title="エリアの指定"
+		android:dialogTitle="エリア"
+		android:entries="@array/area_list"
+		android:entryValues="@array/area_list_values" />
+						
+		<ListPreference
+		android:key="WAIT"
+		android:title="待ち時間で絞り込む"
+		android:dialogTitle="待ち時間の絞り込み"
+		android:entries="@array/wait_list"
+		android:entryValues="@array/wait_list_values" />
+
+		<ListPreference
+		android:key="SORT"
+		android:title="条件で並べ替える"
+		android:dialogTitle="並べ替え"
+		android:entries="@array/sort_list"
+		android:entryValues="@array/sort_list_values" />
+		
+	
+</PreferenceScreen>

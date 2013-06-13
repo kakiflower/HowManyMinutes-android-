@@ -9,10 +9,9 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.google.analytics.tracking.android.EasyTracker;
-
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -78,10 +77,10 @@ public class main extends Activity implements OnItemClickListener{
     public void onCreate(Bundle savedInstanceState) {
     	
     	super.onCreate(savedInstanceState);
-    	
-        // カスタムタイトルを使用する
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 
+    	// カスタムタイトルを使用する
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    	
         // アクティビティをセット
         setContentView(R.layout.activity_main);        
 
@@ -118,9 +117,9 @@ public class main extends Activity implements OnItemClickListener{
 
     	// 更新処理
     	this._reload();
-    	
+
     	// 更新回数ログを収集
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
         int reload_num = sp.getInt("reload", 0);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("reload", reload_num++);
@@ -133,11 +132,11 @@ public class main extends Activity implements OnItemClickListener{
     private void _setTitleBarName() {
 
     	// SharedPreferencesの取得
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
         String title_tmp;
         
         // タイトルに表示しているエリア「ディズニーランド/ディズニーシー」を設定
-        if ("TDS".equals(sp.getString("AREA", "TDS"))) {
+        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
         	title_tmp = "ディズニーシー";
         }
         else {
@@ -146,22 +145,20 @@ public class main extends Activity implements OnItemClickListener{
         
         TextView title = (TextView)findViewById(R.id.titleBarAreaName);
         title.setText(title_tmp);
-
     }
     /*
      * 最新の待ち時間情報を取得する
      */
     private void _reload(){
-
+    	
         // SharedPreferencesの取得
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
         
         // 読込み先URLを指定
         String useUrl;
-        String area = sp.getString("AREA", "TDS");
 
         // ディズニーシー
-        if ("TDS".equals(area)) {
+        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
         	useUrl = this.tdsUrl;
         }
         // ディズニーランド
@@ -264,41 +261,37 @@ public class main extends Activity implements OnItemClickListener{
     private void setFilter() {
 
         // SharedPreferencesの取得
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Myアトラクションのみ表示
-        if ("ON".equals(sp.getString("ATRC", "OFF"))) {
+        if (sp.getBoolean("BOOKMARK", false)) {
         	this._MyAtrcOnly();
         }
 
     	// 解析タグ：ディズニーランド or ディズニーシー
-        if ("TDS".equals(sp.getString("AREA", "TDS"))) {
+        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
         	EasyTracker.getTracker().sendEvent("filter", "area", "land", (long)0);
         }
         else {
         	EasyTracker.getTracker().sendEvent("filter", "area", "sea", (long)0);
         }
-
         
         // 待ち時間絞り込み(0：指定なし, 1：30分以内, 2：31分〜60分以内, 3：61分以降)
     	this._waitTimeBetweenOrder();
 
-//        int waitTimeNum = sp.getInt("WAIT",0);
-        
-        // 並び替え(0：指定なし, 1：待ち時間の短い順, 2；更新時間が新しい順, 3：FP対応アトラクションのみ)
-        int sortNum = sp.getInt("SORT", 0);
-        switch (sortNum) {
-        case 1:
-        	this._waitTimeShortOrder();
-        	break;
-        case 2:
-        	this._updateTimeNewOrder();
-        	break;
-        case 3:
+    	// 並び替え
+        String sortPtn = sp.getString("SORT", "sort_not");
+        if ("sort_wait".equals(sortPtn)) {
+        	this._waitTimeShortOrder();        	
+        }
+        else if ("sort_update".equals(sortPtn)) {
+        	this._updateTimeNewOrder();        	
+        }
+        else if ("sort_fp".equals(sortPtn)) {
         	this._fpAtrcOnly();
-        	break;
-        default:
-        	break;
+        }
+        else {
+        	// 指定なし
         }
     	
     }
@@ -310,28 +303,27 @@ public class main extends Activity implements OnItemClickListener{
 
     	int min;
     	int max;
-    	
-        // SharedPreferencesの取得
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
 
-        int waitTimeNum = sp.getInt("WAIT",0);
+        // SharedPreferencesの取得
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
+    	String waitTime = sp.getString("WAIT", "wait_not");
         
         // ３０分以内
-        if( waitTimeNum == 1){
+        if ("wait_30minute".equals(waitTime)) {
         	min = 0;
         	max = 30;
         	// 解析タグ
         	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_0_30", (long)0);
         }
         // ３１分〜６０分以内
-        else if(waitTimeNum == 2) {
+        else if ("wait_60minute".equals(waitTime)) {
         	min = 31;
         	max = 60;
         	// 解析タグ
         	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_30_60", (long)0);
         }
         // ６１分以降
-        else if(waitTimeNum == 3) {
+        else if ("wait_60over".equals(waitTime)) {
         	min = 61;
         	max = 999;        	
         	// 解析タグ
@@ -421,7 +413,6 @@ public class main extends Activity implements OnItemClickListener{
     			i++;
     		}
     	}
-    	
     	// 解析タグ：お気に入りのみ
     	EasyTracker.getTracker().sendEvent("filter", "button_press", "bookmark_only", (long)0);
     }
@@ -456,7 +447,7 @@ public class main extends Activity implements OnItemClickListener{
         	// 作成したmapをdataに追加
         	data.add(map);
          }
-        
+
         /*
 		 * 作成したdataとカスタマイズしたレイアウトrow.xmlを
          * 紐付けたCustomAdapterを作成する
@@ -486,9 +477,6 @@ public class main extends Activity implements OnItemClickListener{
 		// 選択されたアトラクション情報
 		atrcData atrcData_tmp = this.atrcList.get(position);
 
-//		Log.d("onItemClick", "position:" + String.valueOf(position));
-//		Toast.makeText(this, atrcData_tmp.getAtrc_name(), Toast.LENGTH_LONG).show();
-
 		// Myアトラクション登録確認ダイアログ
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         // アラートダイアログのタイトルを設定します
@@ -512,10 +500,10 @@ public class main extends Activity implements OnItemClickListener{
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        // SharedPreferencesの取得
-                        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
                     	
+                    	// TODO:修正中
+                    	sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                     	// 選択されたアトラクション情報
                     	atrcData tmp = atrcList.get(_pos);
 
@@ -534,25 +522,15 @@ public class main extends Activity implements OnItemClickListener{
 	                	// 作成したデータを削除し、削除したインデックスに追加を行う。
 	                	data.remove(_pos);
 
-                    	// 切り替えるブックマークモード
-                    	String mode;
+                    	// 現在のお気に入り状態の逆を取得する
+                    	Boolean mode = !_isMyAttraction(tmp.getAtrc_name());
 
-                    	// 既にブックマーク登録済みのため解除
-            			if (_isMyAttraction(tmp.getAtrc_name())) {
-            				mode = "OFF";
-            			}
-            			// ブックマークに登録
-            			else {
-            				mode = "ON";
-            			}
-
-                		// SharedPreferenceにブックマーク情報を保存
+                		// SharedPreferenceにお気に入り情報を保存
                 		_saveMyAttraction(tmp.getAtrc_name(), mode);
 
 	                	// ブックマーク表示限定かつブックマーク解除の場合はセルを追加しない。
-                        // Myアトラクションのみ表示
-                        if ("ON".equals(sp.getString("ATRC", "OFF")) &&
-                        	"OFF".equals(mode)) {
+                        // お気に入りアトラクションのみ表示
+                        if (sp.getBoolean("BOOKMARK", false) && mode) {
 
                         	// アダプター用のデータが１つ減るため、ローカルのデータも１つ削除する
                         	atrcList.remove(_pos);
@@ -588,37 +566,32 @@ public class main extends Activity implements OnItemClickListener{
 	}
 	
 	/*
-	 * ローカルにMyアトラクション情報を保存する
+	 * ローカルにお気に入りアトラクション情報を保存する
 	 * 
 	 * @param String atrcName アトラクション名
-	 * @param String mode "ON" or "OFF"
+	 * @param Boolean true:保存する, false:保存しない
 	 */
-	private void _saveMyAttraction(String atrcName, String mode) {
+	private void _saveMyAttraction(String atrcName, Boolean mode) {
 
 		// SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putString(atrcName, mode);
+        editor.putBoolean(atrcName, mode);
         editor.commit();
 	}
 	
 	/*
-	 * ローカルより指定されたMyアトラクション情報を取得する
+	 * ローカルに保存されたお気に入りアトラクション情報を取得する
 	 * 
 	 * @param String atrcName アトラクション名
-	 * @return Boolean true  Myアトラクションで保存されている
-	 *                 false Myアトラクションで保存されていない
+	 * @return Boolean true  引数で指定されたアトラクションがお気に入りに保存されている
+	 *                 false 引数で指定されたアトラクションがお気に入りに保存されていない
 	 */
 	private Boolean _isMyAttraction(String atrcName) {
 
 		// SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
-        if ("ON".equals(sp.getString(atrcName, "OFF"))) {
-        	return true;
-        }
-        else {
-        	return false;
-        }
+        return sp.getBoolean(atrcName, false);
 	}	
 	
 	/*
