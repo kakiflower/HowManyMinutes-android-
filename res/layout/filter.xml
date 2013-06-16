@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-	xmlns:android="http://schemas.android.com/apk/res/android">
-
-	
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	>
 		<CheckBoxPreference
 		android:key="BOOKMARK"
 		android:title="お気に入りのみ表示"
-		android:summaryOn="チェックしました"
-        android:summaryOff="チェックしていません"/>
+        android:background="#FFFFFF"/>
 
 		<ListPreference
 		android:key="AREA"
@@ -19,7 +17,7 @@
 		<ListPreference
 		android:key="WAIT"
 		android:title="待ち時間で絞り込む"
-		android:dialogTitle="待ち時間の絞り込み"
+		android:dialogTitle="待ち時間で絞り込み"
 		android:entries="@array/wait_list"
 		android:entryValues="@array/wait_list_values" />
 
@@ -29,6 +27,5 @@
 		android:dialogTitle="並べ替え"
 		android:entries="@array/sort_list"
 		android:entryValues="@array/sort_list_values" />
-		
 	
 </PreferenceScreen>

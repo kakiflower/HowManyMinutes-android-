@@ -9,21 +9,21 @@
     <string-array name="wait_list">
         <item >指定なし</item>
         <item >３０分以内</item>
-        <item >３１分〜６０分以内</item>
-        <item >６１分以降</item>
+        <item >６０分以内</item>
+        <item >１２０分以内</item>
     </string-array>
     <string-array name="wait_list_values">
         <item >wait_not</item>
         <item >wait_30minute</item>
         <item >wait_60minute</item>
-        <item >wait_60over</item>
+        <item >wait_120minute</item>
     </string-array>
     
     <string-array name="sort_list">
         <item >指定なし</item>
         <item >待ち時間の短い順</item>
         <item >更新時間が新しい順</item>
-        <item >ＦＰ対応アトラクションのみ</item>
+        <item >ファストパス対応のみ</item>
     </string-array>
     <string-array name="sort_list_values">
         <item >sort_not</item>

@@ -5,28 +5,35 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.PreferenceActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 
+import com.actionbarsherlock.app.SherlockPreferenceActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 
-public class sortMenu extends PreferenceActivity implements OnSharedPreferenceChangeListener{
+public class sortMenu extends SherlockPreferenceActivity implements OnSharedPreferenceChangeListener{
 
 	public SharedPreferences sp;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.layout.filter);
+  
+    	// テーマを適用
+		setTheme(R.style.Theme_Sherlock);
+
+		super.onCreate(savedInstanceState);
+
+		// 透明なアイコンを表示
+        getSupportActionBar().setIcon(android.R.color.transparent);
+    	
+    	// レイアウトを割り当て
+        addPreferencesFromResource(R.layout.filter);
         
         // SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
 
 		// エリア
-//		ListPreference areaPref = (ListPreference)getPreferenceScreen().findPreference("AREA");
 		ListPreference areaPref = (ListPreference)findPreference("AREA");
 		if (null == areaPref.getValue()) {
 			areaPref.setDefaultValue("area_tdl");
@@ -37,7 +44,6 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 		}
 
 		// 待ち時間
-//		ListPreference waitPref = (ListPreference)getPreferenceScreen().findPreference("WAIT");
 		ListPreference waitPref = (ListPreference)findPreference("WAIT");
 		if (null == waitPref.getValue()) {
 			waitPref.setDefaultValue("wait_not");
@@ -48,7 +54,6 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 		}
 		
 		// 条件で並べ替え
-//		ListPreference sortPref = (ListPreference)getPreferenceScreen().findPreference("SORT");
 		ListPreference sortPref = (ListPreference)findPreference("SORT");
 		if (null == sortPref.getValue()) {
 			sortPref.setDefaultValue("sort_not");			
@@ -58,10 +63,34 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 			sortPref.setSummary(sortPref.getEntry());
 		}
 
-        // 各アイテムへの初期値設定
-//        initSortMenu();
     }
 
+    /*
+     * アクションバー生成
+     */
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+		
+		// 保存
+        menu.add("save")
+            .setIcon(android.R.drawable.ic_menu_save)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        return true;
+    }
+	
+	/*
+	 * アクションバーのボタンが押されたとき
+	 */
+	 @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+	        if ("save".equals(item.getTitle())) {
+	        	finish();
+	        }
+	        return super.onOptionsItemSelected(item);
+	 }
+    
     /*
      * ListPreferenceのサマリーを選択されたアイテムに差し替える
      * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
@@ -85,7 +114,6 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 			sortPref.setSummary(sortPref.getEntry());
 		}
 	}
-
     
     @Override
     public void onStart() {
@@ -101,7 +129,7 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 
 	@Override  
 	protected void onResume() {  
-	    super.onResume();  
+	    super.onResume();
 	    getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);  
 	}  
 	   
@@ -110,67 +138,4 @@ public class sortMenu extends PreferenceActivity implements OnSharedPreferenceCh
 	    super.onPause();  
 	    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);  
 	}  
-        
-    /*
-     * 「キャンセル」ボタンが押された時
-     */
-    public void pushCancel(View v){
-    	finish();
-    }
-
-    /*
-     * 「ＯＫ」ボタンが押された時
-     */
-    public void pushOK(View v){
-
-    	// TODO:ラジオボタン、スピナー取得をなくす。
-    	
-    	// 書き込み用ShareadPreferences.Editorオブジェクトを取得
-    	SharedPreferences.Editor editor = sp.edit();
-
-    	// 各アイテムごと、初期値でない場合は選択値を保存する
-    	
-    	// エリア
-    	RadioButton radioAreaTdl = (RadioButton)findViewById(R.id.radioTdl);
-//    	RadioButton radioAreaTds = (RadioButton)findViewById(R.id.radioTds);
-
-    	if (radioAreaTdl.isChecked()) {
-        	Log.d("area", "ディズニーランド指定");
-        	editor.putString("AREA", "TDL");
-    	}
-    	else {
-        	Log.d("area","ディズニーシー指定");    	
-        	editor.putString("AREA", "TDS");
-    	}
-    	
-    	// Myアトラクション絞り込み
-    	RadioButton radioAtrcOff = (RadioButton)findViewById(R.id.radioOff);
-//    	RadioButton radioAtrcOn = (RadioButton)findViewById(R.id.radioOn);
-
-    	if (radioAtrcOff.isChecked()) {
-        	Log.d("atrc", "Myアトラクション指定なし");    	
-        	editor.putString("ATRC", "OFF");
-    	}
-    	else {
-        	Log.d("atrc", "Myアトラクション指定あり");    	
-        	editor.putString("ATRC", "ON");
-    	}
-
-    	// 時間指定
-    	Spinner spinWait = (Spinner)findViewById(R.id.spinnerWait);
-    	Log.d("spinWait", String.valueOf(spinWait.getSelectedItemPosition()));
-    	editor.putInt("WAIT", spinWait.getSelectedItemPosition());
-    	
-    	// ソート条件
-    	Spinner spinSort = (Spinner)findViewById(R.id.spinnerSort);
-    	Log.d("spinSort", String.valueOf(spinSort.getSelectedItemPosition()));
-    	editor.putInt("SORT", spinSort.getSelectedItemPosition());
-    	
-    	// 書き込みを終了
-    	editor.commit();
-
-    	setResult(RESULT_OK);
-    	
-    	finish();
-    }
 }

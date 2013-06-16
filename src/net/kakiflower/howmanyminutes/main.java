@@ -6,18 +6,20 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.google.analytics.tracking.android.EasyTracker;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +31,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-public class main extends Activity implements OnItemClickListener{
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.google.analytics.tracking.android.EasyTracker;
+
+public class main extends SherlockActivity implements OnItemClickListener{
 	
 	// 絞り込み条件
 	SharedPreferences sp;
@@ -51,11 +57,14 @@ public class main extends Activity implements OnItemClickListener{
 	
 	// 表示用リストビュー
 	public ListView lv;
-	
+
 	// JSONデータ
 	public JSONClient jsonClient;
 	public JSONObject rootJsonObj;
 	public ArrayList<atrcData> atrcList;
+
+	// 開園状況 true:開演中, false:閉園中
+	public Boolean openFlg;
 	
 	// JSONListener
 	GetJSONListener jsonListener = new GetJSONListener() {
@@ -70,47 +79,136 @@ public class main extends Activity implements OnItemClickListener{
 			
 			// 待ち時間リストの生成を行う
 			initAtrcList();
+			
+			// オープンしていない場合、絞り込み０件の場合にポップアップを表示
+			openCheck();
 		}
 	};
-	
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	
+
     	super.onCreate(savedInstanceState);
 
-    	// カスタムタイトルを使用する
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
     	
+		setTheme(R.style.Theme_Sherlock);
+
+		// アイコンなし
+        getSupportActionBar().setIcon(android.R.color.transparent);
+
         // アクティビティをセット
         setContentView(R.layout.activity_main);        
+    }
 
-        // カスタムタイトルをセット
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.titlebar);
+    /*
+     * 対象のアトラクションが存在しない場合ダイアログを表示、再度絞り込みメニューへ
+     */
+    public void openCheck() {
+    	
+    	// お知らせ用ダイアログ
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("お知らせ");
+        alertDialogBuilder.setCancelable(true);
+        
+        // 閉園中の場合はダイアログ表示
+    	if (!this.openFlg) {
+    		alertDialogBuilder.setMessage("現在は閉園中です。");
+            alertDialogBuilder.setPositiveButton("ＯＫ",
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+    	}
+    	// 開演中だが絞り込み該当0件の場合はダイアログ表示
+    	else if(this.openFlg && this.atrcList.size() == 0) {
+    		alertDialogBuilder.setMessage("対象のアトラクションはありません。");
+            alertDialogBuilder.setPositiveButton("ＯＫ",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-    	// タイトルバー用のエリア名を設定
-    	this._setTitleBarName();
-
-    	// 最新の待ち時間JSONデータを取得
-    	this._reload();
+                        	// 絞り込み画面に遷移する
+                        	change();
+                        }
+                    });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+    	}
 
     }
 
+    /*
+    * アクションバーのメニュー及びメニューボタン押下時のメニュー生成
+	*/
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        menu.add("reload")
+            .setIcon(R.drawable.ic_refresh)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+
+        menu.add("filter")
+        	.setIcon(android.R.drawable.ic_menu_sort_by_size)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        
+        menu.add("更新")
+            .setIcon(R.drawable.ic_refresh)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        menu.add("絞り込み")
+        	.setIcon(android.R.drawable.ic_menu_sort_by_size)
+        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+
+        return true;
+    }
+
+	/*
+	 * アクションバーのボタンが押されたとき
+	 */
+	 @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		 	String title = (String)item.getTitle();
+		 
+	        if ("reload".equals(title) || 
+	        	"更新".equals(title)) {
+	        	this.reload();
+	        }
+	        else if ("filter".equals(title) || 
+	        		 "絞り込み".equals(title)) {
+	        	this.change();
+	        }
+	        return super.onOptionsItemSelected(item);
+	 }
+
     @Override
     public void onStart() {
-      super.onStart();
-      EasyTracker.getInstance().activityStart(this);
+
+    	// タイトルバー用のエリア名を設定
+    	this._setTitleBarName();
+    	
+    	// 最新の待ち時間JSONデータを取得
+    	// (ソート画面からバックして来た場合も強制的にリロード処理)
+    	this._reload();
+    	
+    	super.onStart();
+    	EasyTracker.getInstance().activityStart(this);
     }
 
     @Override
     public void onStop() {
-      super.onStop();
-      EasyTracker.getInstance().activityStop(this);
+    	super.onStop();
+    	EasyTracker.getInstance().activityStop(this);
     }
     
     /*
      * 「更新」ボタンが押された時
      */
-    public void reload(View v){
+    public void reload() {
 
     	// タイトルバー用のエリア名を設定
     	this._setTitleBarName();
@@ -124,6 +222,7 @@ public class main extends Activity implements OnItemClickListener{
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("reload", reload_num++);
     	EasyTracker.getTracker().sendEvent("action", "button_press", "reload", (long)reload_num);
+
     }
 
     /*
@@ -133,19 +232,16 @@ public class main extends Activity implements OnItemClickListener{
 
     	// SharedPreferencesの取得
     	sp = PreferenceManager.getDefaultSharedPreferences(this);
-        String title_tmp;
         
         // タイトルに表示しているエリア「ディズニーランド/ディズニーシー」を設定
         if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
-        	title_tmp = "ディズニーシー";
+            getSupportActionBar().setTitle("ディズニーシー");
         }
         else {
-        	title_tmp = "ディズニーランド";
+            getSupportActionBar().setTitle("ディズニーランド");
         }
-        
-        TextView title = (TextView)findViewById(R.id.titleBarAreaName);
-        title.setText(title_tmp);
     }
+
     /*
      * 最新の待ち時間情報を取得する
      */
@@ -165,52 +261,41 @@ public class main extends Activity implements OnItemClickListener{
         else {
         	useUrl = this.tdlUrl;
         }
-        
-        // JSONデータ解析
-        this.jsonClient = new JSONClient(this, jsonListener);
-        this.jsonClient.execute(useUrl);    	
+
+        // ネットワーク未接続の場合はダイアログ表示
+        if (isConnected()) {
+
+        	// JSONデータ解析
+            this.jsonClient = new JSONClient(this, jsonListener);
+            this.jsonClient.execute(useUrl);    	
+        }
+        else {
+        	
+        	// お知らせ用ダイアログ
+    		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+    		alertDialogBuilder.setMessage("通信に失敗しました。\nインターネット接続状態を確認してください。");
+            alertDialogBuilder.setPositiveButton("ＯＫ",
+                    new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
     }
 
     /*
      * 「切替」ボタンが押された時
      */
-    public void change(View v){
-    	Toast.makeText(this, "切替が押されました。", Toast.LENGTH_LONG).show();
+    public void change() {
     	
     	// インテントのインスタンス生成
     	Intent intent = new Intent(main.this, sortMenu.class);
     	// 次画面のアクティビティ起動
-    	startActivityForResult( intent, 0);
+    	startActivity(intent);
     }
-    
-    // startActivityForResult で起動させたアクティビティが
-    // finish() により破棄されたときにコールされる
-    // requestCode : startActivityForResult の第二引数で指定した値が渡される
-    // resultCode : 起動先のActivity.setResult の第一引数が渡される
-    // Intent data : 起動先Activityから送られてくる Intent
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	super.onActivityResult(requestCode, resultCode, data);
-   
-    	switch (requestCode) {
-    	case 0:
-        if (resultCode == RESULT_OK) {
 
-        	// タイトルバー用のエリア名を設定
-        	this._setTitleBarName();
-
-        	// 絞り込みを適用
-        	
-        	// 再読み込み
-        	this._reload();
-        }
-
-        // バックボタン等
-    	default:
-    		break;
-    	}
-    }
-    
     /*
      * 待ち時間JSONデータから待ち時間リストを生成
      */
@@ -221,7 +306,10 @@ public class main extends Activity implements OnItemClickListener{
     	try {
 			int status = rootJson.getInt("status");
 			Log.d("status", String.valueOf(status));
-			
+
+			// 開園状況 true:開演中, false:閉園中
+			openFlg = (200 == status ? true : false);
+
 			jsons = rootJson.getJSONArray("attractions");
 			
 			this.atrcList = new ArrayList<atrcData>();
@@ -263,7 +351,10 @@ public class main extends Activity implements OnItemClickListener{
         // SharedPreferencesの取得
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        // Myアトラクションのみ表示
+        // お気に入りのみ表示
+
+        Log.d("フィルターブックマーク", "bookMarkFlg:" + String.valueOf(sp.getBoolean("BOOKMARK", false)));
+
         if (sp.getBoolean("BOOKMARK", false)) {
         	this._MyAtrcOnly();
         }
@@ -301,7 +392,7 @@ public class main extends Activity implements OnItemClickListener{
      */
     private void _waitTimeBetweenOrder() {
 
-    	int min;
+    	// 待ち時間最大
     	int max;
 
         // SharedPreferencesの取得
@@ -310,24 +401,21 @@ public class main extends Activity implements OnItemClickListener{
         
         // ３０分以内
         if ("wait_30minute".equals(waitTime)) {
-        	min = 0;
         	max = 30;
         	// 解析タグ
-        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_0_30", (long)0);
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "wait_30", (long)0);
         }
-        // ３１分〜６０分以内
+        // ６０分以内
         else if ("wait_60minute".equals(waitTime)) {
-        	min = 31;
         	max = 60;
         	// 解析タグ
-        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "middle_of_30_60", (long)0);
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "wait_60", (long)0);
         }
-        // ６１分以降
-        else if ("wait_60over".equals(waitTime)) {
-        	min = 61;
+        // 120分以内
+        else if ("wait_120minute".equals(waitTime)) {
         	max = 999;        	
         	// 解析タグ
-        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "60_over", (long)0);
+        	EasyTracker.getTracker().sendEvent("filter", "wait_ptn", "wait_120", (long)0);
         }
     	// 未指定の場合
         else {
@@ -349,7 +437,7 @@ public class main extends Activity implements OnItemClickListener{
     			atrcTimeInt = Integer.valueOf(atrcTimeStr);
     		}
     		
-    		if (min <= atrcTimeInt && atrcTimeInt <= max) {
+    		if (atrcTimeInt <= max) {
     			i++;
     		}
     		else {
@@ -398,7 +486,7 @@ public class main extends Activity implements OnItemClickListener{
     }
     
     /*
-     * 絞り込み：MYアトラクションのみ
+     * 絞り込み：お気に入りのみ
      */
     private void _MyAtrcOnly() {
 
@@ -477,34 +565,36 @@ public class main extends Activity implements OnItemClickListener{
 		// 選択されたアトラクション情報
 		atrcData atrcData_tmp = this.atrcList.get(position);
 
-		// Myアトラクション登録確認ダイアログ
+		// お気に入り登録確認ダイアログ
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        // アラートダイアログのタイトルを設定します
-        alertDialogBuilder.setTitle("確認");
-        
+
         // アラートダイアログのメッセージを設定します
         String q;
         String atrcName = atrcData_tmp.getAtrc_name();
         // メッセージタイプ種類を設定
         if (_isMyAttraction(atrcName)) {
-        	q = atrcName +"¥nをMyアトラクションから解除しますか？";
+        	q = atrcName +"\n\nお気に入りから削除しますか？";
         }
         else {
-        	q = atrcName + "¥nをMyアトラクションに登録しますか？";        	
+        	q = atrcName + "\n\nお気に入りに登録しますか？";        	
         }
         
         alertDialogBuilder.setMessage(q);
+
+        // SharedPreferencesの取得
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        
+    	// お気に入り表示モードフラグ
+    	final Boolean bookMarkFlg = sp.getBoolean("BOOKMARK", false);
         
         // アラートダイアログの肯定ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
-        alertDialogBuilder.setPositiveButton("ＯＫ",
+        alertDialogBuilder.setPositiveButton("はい",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                    	
-                    	// TODO:修正中
-                    	sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
                     	// 選択されたアトラクション情報
+//                    	sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     	atrcData tmp = atrcList.get(_pos);
 
                 		// ローカルのアトラクション情報を更新
@@ -522,24 +612,33 @@ public class main extends Activity implements OnItemClickListener{
 	                	// 作成したデータを削除し、削除したインデックスに追加を行う。
 	                	data.remove(_pos);
 
-                    	// 現在のお気に入り状態の逆を取得する
-                    	Boolean mode = !_isMyAttraction(tmp.getAtrc_name());
-
+                    	// 現在のお気に入り状態を取得する
+                    	Boolean visibleFlg = _isMyAttraction(tmp.getAtrc_name());
+                    	                    	
+                    	Log.d("ブックマーク", "visibleFlg:" + String.valueOf(visibleFlg));
+                    	Log.d("ブックマーク", "bookMarkFlg:" + String.valueOf(bookMarkFlg));
+                    	Log.d("ブックマーク", "getAtrc_name:" + tmp.getAtrc_name());
+                    	
                 		// SharedPreferenceにお気に入り情報を保存
-                		_saveMyAttraction(tmp.getAtrc_name(), mode);
+                		_saveMyAttraction(tmp.getAtrc_name(), !visibleFlg);
 
 	                	// ブックマーク表示限定かつブックマーク解除の場合はセルを追加しない。
                         // お気に入りアトラクションのみ表示
-                        if (sp.getBoolean("BOOKMARK", false) && mode) {
+                        if (bookMarkFlg && visibleFlg) {
 
+                            Log.d("ブックマーク","削除");
+                        	
                         	// アダプター用のデータが１つ減るため、ローカルのデータも１つ削除する
                         	atrcList.remove(_pos);
                         }
                         else {
-                        	// ListView更新のため、削除➡追加を行う。
+                            Log.d("ブックマーク","追加");
+
+                            // ListView更新のため、削除➡追加を行う。
                         	data.add(_pos, map);
                         }
 
+                        
 	                	// アダプタにデータ変更を通知
                 		ca.notifyDataSetChanged();
                 		
@@ -547,9 +646,9 @@ public class main extends Activity implements OnItemClickListener{
                 		lv.invalidateViews();
                     }
                 });
-        
+
         // アラートダイアログの中立ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
-        alertDialogBuilder.setNeutralButton("キャンセル",
+        alertDialogBuilder.setNeutralButton("いいえ",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -564,7 +663,7 @@ public class main extends Activity implements OnItemClickListener{
         alertDialog.show();
 		
 	}
-	
+
 	/*
 	 * ローカルにお気に入りアトラクション情報を保存する
 	 * 
@@ -767,12 +866,6 @@ public class main extends Activity implements OnItemClickListener{
 				minute2 = Integer.parseInt(tmp[1]);
 			}
 
-			/*
-			int hour1 = atrc1.getUpdate().equals("") ? 0 : Integer.parseInt(atrc1.getUpdate().substring(0, 1)); 
-			int minute1 = atrc1.getUpdate().equals("") ? 0 : Integer.parseInt(atrc1.getUpdate().substring(3, 4));
-			int hour2 = atrc2.getUpdate().equals("") ? 0 : Integer.parseInt(atrc2.getUpdate().substring(0, 1)); 
-			int minute2 = atrc2.getUpdate().equals("") ? 0 : Integer.parseInt(atrc2.getUpdate().substring(3, 4));
-			*/
 			Log.d("update1", atrc1.getUpdate());
 			Log.d("update1", atrc2.getUpdate());
 			Log.d("hour1", String.valueOf(hour1));
@@ -783,5 +876,17 @@ public class main extends Activity implements OnItemClickListener{
 			return (hour1*60+minute1) < (hour2*60+minute2) ? 1 : -1;
 		}
 	}
-
+	
+	/*
+	 * ネットワーク接続状態を返却する 
+	 */
+    public boolean isConnected() {
+    	Context context = this.getApplicationContext();
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if( ni != null ){
+            return cm.getActiveNetworkInfo().isConnected();
+        }
+        return false;
+    }
 }
