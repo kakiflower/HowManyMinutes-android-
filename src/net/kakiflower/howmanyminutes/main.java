@@ -38,17 +38,17 @@ import com.actionbarsherlock.view.MenuItem;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class main extends SherlockActivity implements OnItemClickListener{
-	
+
 	// 絞り込み条件
 	SharedPreferences sp;
 	
 	// JSONデータ取得先
-	private String tdlUrl = "http://www.kakiflower.net/tdl.php";
-	private String tdsUrl = "http://www.kakiflower.net/tds.php";
-	
+	private String tdlUrl = "http://www.kakiflower.net/app/how-many-minute/tdl.php";
+	private String tdsUrl = "http://www.kakiflower.net/app/how-many-minute/tds.php";
+
 	// 最後に選択したリスト番号
 	private int _pos;
-	
+
 	// カスタムアダプタ
 	public CustomAdapter ca;
 
@@ -108,7 +108,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	
     	// お知らせ用ダイアログ
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("お知らせ");
         alertDialogBuilder.setCancelable(true);
         
         // 閉園中の場合はダイアログ表示
@@ -148,19 +147,19 @@ public class main extends SherlockActivity implements OnItemClickListener{
     public boolean onCreateOptionsMenu(Menu menu) {
 
         menu.add("reload")
-            .setIcon(R.drawable.ic_refresh)
+            .setIcon(android.R.drawable.ic_menu_rotate)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
         menu.add("filter")
-        	.setIcon(android.R.drawable.ic_menu_sort_by_size)
+        	.setIcon(android.R.drawable.ic_menu_preferences)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         
         menu.add("更新")
-            .setIcon(R.drawable.ic_refresh)
+            .setIcon(android.R.drawable.ic_menu_rotate)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-        menu.add("絞り込み")
-        	.setIcon(android.R.drawable.ic_menu_sort_by_size)
+        menu.add("設定")
+        	.setIcon(android.R.drawable.ic_menu_preferences)
         	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;
@@ -179,7 +178,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	        	this.reload();
 	        }
 	        else if ("filter".equals(title) || 
-	        		 "絞り込み".equals(title)) {
+	        		 "設定".equals(title)) {
 	        	this.change();
 	        }
 	        return super.onOptionsItemSelected(item);
@@ -221,6 +220,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
         int reload_num = sp.getInt("reload", 0);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("reload", reload_num++);
+        editor.commit();
     	EasyTracker.getTracker().sendEvent("action", "button_press", "reload", (long)reload_num);
 
     }
@@ -594,7 +594,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
                     public void onClick(DialogInterface dialog, int which) {
 
                     	// 選択されたアトラクション情報
-//                    	sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     	atrcData tmp = atrcList.get(_pos);
 
                 		// ローカルのアトラクション情報を更新
@@ -614,10 +613,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
                     	// 現在のお気に入り状態を取得する
                     	Boolean visibleFlg = _isMyAttraction(tmp.getAtrc_name());
-                    	                    	
-                    	Log.d("ブックマーク", "visibleFlg:" + String.valueOf(visibleFlg));
-                    	Log.d("ブックマーク", "bookMarkFlg:" + String.valueOf(bookMarkFlg));
-                    	Log.d("ブックマーク", "getAtrc_name:" + tmp.getAtrc_name());
                     	
                 		// SharedPreferenceにお気に入り情報を保存
                 		_saveMyAttraction(tmp.getAtrc_name(), !visibleFlg);
@@ -625,23 +620,19 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	                	// ブックマーク表示限定かつブックマーク解除の場合はセルを追加しない。
                         // お気に入りアトラクションのみ表示
                         if (bookMarkFlg && visibleFlg) {
-
-                            Log.d("ブックマーク","削除");
                         	
                         	// アダプター用のデータが１つ減るため、ローカルのデータも１つ削除する
                         	atrcList.remove(_pos);
                         }
                         else {
-                            Log.d("ブックマーク","追加");
 
-                            // ListView更新のため、削除➡追加を行う。
+                        	// ListView更新のため、削除➡追加を行う。
                         	data.add(_pos, map);
                         }
 
-                        
 	                	// アダプタにデータ変更を通知
                 		ca.notifyDataSetChanged();
-                		
+
                 		// リストビューの描画を更新
                 		lv.invalidateViews();
                     }
@@ -719,9 +710,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			@SuppressWarnings("unchecked")
 			// 該当位置のデータを取得
 			Map<String, Object> data = (Map<String, Object>) listView.getItemAtPosition(position);
-
-			// パークエリアネーム
-			// TODO 考慮不足
 
 			// アトラクション名
 			TextView atrc_name = (TextView)convertView.findViewById(R.id.atrc_name);
@@ -865,13 +853,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				hour2 = Integer.parseInt(tmp[0]);
 				minute2 = Integer.parseInt(tmp[1]);
 			}
-
-			Log.d("update1", atrc1.getUpdate());
-			Log.d("update1", atrc2.getUpdate());
-			Log.d("hour1", String.valueOf(hour1));
-			Log.d("minute1", String.valueOf(minute1));
-			Log.d("hour2", String.valueOf(hour2));
-			Log.d("minute2", String.valueOf(minute2));
 			
 			return (hour1*60+minute1) < (hour2*60+minute2) ? 1 : -1;
 		}
