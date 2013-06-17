@@ -305,7 +305,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	
     	try {
 			int status = rootJson.getInt("status");
-			Log.d("status", String.valueOf(status));
 
 			// 開園状況 true:開演中, false:閉園中
 			openFlg = (200 == status ? true : false);
@@ -328,17 +327,9 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				
 				// アトラクションリストへ追加
 				this.atrcList.add(tmp);
-				
-				Log.d("area_name", o.getString("area_name"));
-				Log.d("atrc_name", o.getString("atrc_name"));
-				Log.d("fp", o.getString("fp"));
-				Log.d("run", o.getString("run"));
-				Log.d("update", o.getString("update"));
-				Log.d("wait", o.getString("wait"));
 			}
 
 		} catch (JSONException e) {
-			Log.d("error", "JSONException");
 			e.printStackTrace();
 		}
     }
@@ -520,8 +511,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				= new HashMap<String, String>();
 			
         	atrcData tmp = this.atrcList.get(i);
-
-        	Log.d("DEBUG", tmp.getArea_name());
         	
         	// アトラクション各データをmapに代入
         	map.put("area_name", tmp.getArea_name());
