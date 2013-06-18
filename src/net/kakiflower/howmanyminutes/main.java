@@ -20,7 +20,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -70,18 +70,27 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	GetJSONListener jsonListener = new GetJSONListener() {
 		@Override
 		public void onRemoteCallComplete(JSONObject jsonFromNet) {
-
+			
 			// JSONデータからatrcListにまとめる
-			createAtrcList(jsonFromNet);
+			if (createAtrcList(jsonFromNet)) {
 
-			// ソート条件によって並べ替えを行う
-			setFilter();
-			
-			// 待ち時間リストの生成を行う
-			initAtrcList();
-			
-			// オープンしていない場合、絞り込み０件の場合にポップアップを表示
-			openCheck();
+				// ソート条件によって並べ替えを行う
+				setFilter();
+				
+				// 待ち時間リストの生成を行う
+				initAtrcList();
+				
+				// オープンしていない場合、絞り込み０件の場合にポップアップを表示
+				openCheck();
+			}
+			else {
+				
+				// タイトル設定
+				_setTitleBarName();
+				
+				// ネットワークエラー表示
+				netWorkErrorDialog();
+			}
 		}
 	};
 
@@ -112,8 +121,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
         
         // 閉園中の場合はダイアログ表示
     	if (!this.openFlg) {
-    		alertDialogBuilder.setMessage("現在は閉園中です。");
-            alertDialogBuilder.setPositiveButton("ＯＫ",
+    		alertDialogBuilder.setMessage(getResources().getString(R.string.now_park_close));
+            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_ok),
                     new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -124,8 +133,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	}
     	// 開演中だが絞り込み該当0件の場合はダイアログ表示
     	else if(this.openFlg && this.atrcList.size() == 0) {
-    		alertDialogBuilder.setMessage("対象のアトラクションはありません。");
-            alertDialogBuilder.setPositiveButton("ＯＫ",
+    		alertDialogBuilder.setMessage(getResources().getString(R.string.target_atrc_not));
+            alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_ok),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -154,11 +163,11 @@ public class main extends SherlockActivity implements OnItemClickListener{
         	.setIcon(android.R.drawable.ic_menu_preferences)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         
-        menu.add("更新")
+        menu.add(getResources().getString(R.string.menu_label_reload))
             .setIcon(android.R.drawable.ic_menu_rotate)
             .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
-        menu.add("設定")
+        menu.add(getResources().getString(R.string.menu_label_pref))
         	.setIcon(android.R.drawable.ic_menu_preferences)
         	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
@@ -174,11 +183,11 @@ public class main extends SherlockActivity implements OnItemClickListener{
 		 	String title = (String)item.getTitle();
 		 
 	        if ("reload".equals(title) || 
-	        	"更新".equals(title)) {
+	        	getResources().getString(R.string.menu_label_reload).equals(title)) {
 	        	this.reload();
 	        }
 	        else if ("filter".equals(title) || 
-	        		 "設定".equals(title)) {
+	        		getResources().getString(R.string.menu_label_pref).equals(title)) {
 	        	this.change();
 	        }
 	        return super.onOptionsItemSelected(item);
@@ -234,11 +243,12 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	sp = PreferenceManager.getDefaultSharedPreferences(this);
         
         // タイトルに表示しているエリア「ディズニーランド/ディズニーシー」を設定
-        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
-            getSupportActionBar().setTitle("ディズニーシー");
+    	String title = sp.getString("AREA", "area_tds");
+        if ("area_tds".equals(title) ||  "".equals(title)) {
+            getSupportActionBar().setTitle(getResources().getString(R.string.disney_sea));
         }
         else {
-            getSupportActionBar().setTitle("ディズニーランド");
+            getSupportActionBar().setTitle(getResources().getString(R.string.disney_land));
         }
     }
 
@@ -271,20 +281,27 @@ public class main extends SherlockActivity implements OnItemClickListener{
         }
         else {
         	
-        	// お知らせ用ダイアログ
-    		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-    		alertDialogBuilder.setMessage("通信に失敗しました。\nインターネット接続状態を確認してください。");
-            alertDialogBuilder.setPositiveButton("ＯＫ",
-                    new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+        	// ネットワークエラー用ダイアログ
+        	netWorkErrorDialog();
         }
     }
 
+    /*
+     * ネットワークエラーダイアログ表示
+     */
+    public void netWorkErrorDialog() {
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+		alertDialogBuilder.setMessage(getResources().getString(R.string.error_msg_conect));
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_ok),
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
     /*
      * 「切替」ボタンが押された時
      */
@@ -298,13 +315,18 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     /*
      * 待ち時間JSONデータから待ち時間リストを生成
+	 * @return true:JSON通信成功, false:JSON通信失敗
      */
-    private void createAtrcList(JSONObject rootJson) {
+    private Boolean createAtrcList(JSONObject rootJson) {
 
     	JSONArray jsons;
     	
     	try {
-			int status = rootJson.getInt("status");
+    		// 通信失敗時はエラー扱いとする。
+//    		if (rootJson.get("status") == JSONObject.NULL) return false; 
+    		if (rootJson == null) return false; 
+
+    		int status = rootJson.getInt("status");
 
 			// 開園状況 true:開演中, false:閉園中
 			openFlg = (200 == status ? true : false);
@@ -332,6 +354,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+    	
+    	return true;
     }
     
     /*
@@ -343,9 +367,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         // お気に入りのみ表示
-
-        Log.d("フィルターブックマーク", "bookMarkFlg:" + String.valueOf(sp.getBoolean("BOOKMARK", false)));
-
         if (sp.getBoolean("BOOKMARK", false)) {
         	this._MyAtrcOnly();
         }
@@ -389,7 +410,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
         // SharedPreferencesの取得
     	sp = PreferenceManager.getDefaultSharedPreferences(this);
     	String waitTime = sp.getString("WAIT", "wait_not");
-        
+
         // ３０分以内
         if ("wait_30minute".equals(waitTime)) {
         	max = 30;
@@ -562,10 +583,10 @@ public class main extends SherlockActivity implements OnItemClickListener{
         String atrcName = atrcData_tmp.getAtrc_name();
         // メッセージタイプ種類を設定
         if (_isMyAttraction(atrcName)) {
-        	q = atrcName +"\n\nお気に入りから削除しますか？";
+        	q = atrcName + getResources().getString(R.string.dialog_msg_delete);
         }
         else {
-        	q = atrcName + "\n\nお気に入りに登録しますか？";        	
+        	q = atrcName + getResources().getString(R.string.dialog_msg_regist);        	
         }
         
         alertDialogBuilder.setMessage(q);
@@ -575,9 +596,9 @@ public class main extends SherlockActivity implements OnItemClickListener{
         
     	// お気に入り表示モードフラグ
     	final Boolean bookMarkFlg = sp.getBoolean("BOOKMARK", false);
-        
-        // アラートダイアログの肯定ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
-        alertDialogBuilder.setPositiveButton("はい",
+
+    	// アラートダイアログの肯定ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
+        alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_hai),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -628,7 +649,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
                 });
 
         // アラートダイアログの中立ボタンがクリックされた時に呼び出されるコールバックリスナーを登録します
-        alertDialogBuilder.setNeutralButton("いいえ",
+        alertDialogBuilder.setNeutralButton(getResources().getString(R.string.btn_label_iie),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -733,7 +754,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				fp.setText(fp_tmp);
 				
 				// FP発券終了している場合はアイコンを切り替える
-				if ("現在発券しておりません".equals(fp_tmp)) {
+				if (getResources().getString(R.string.atrc_msg_fp_pass_end).equals(fp_tmp)) {
 					fpIcon.setImageResource(R.drawable.icon_30x20_fp_off);
 				}
 				else{
@@ -756,9 +777,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				update.setVisibility(View.GONE);				
 			}
 			else {
-				update.setText("(更新時間 " + update_tmp + ")");				
+				update.setText("(" + getResources().getString(R.string.atrc_msg_update) +  " "+ update_tmp + ")");				
 			}
-			
 			
 			// 待ち時間
 			TextView wait = (TextView)convertView.findViewById(R.id.wait);
@@ -770,7 +790,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			}
 
 			// 「運営中」かつ更新時間がある場合のみ表示。
-			if ("運営中".equals(run_tmp)) {
+			if (getResources().getString(R.string.atrc_msg_run_ok).equals(run_tmp)) {
 				wait.setText(wait_tmp);
 			}
 			else {	

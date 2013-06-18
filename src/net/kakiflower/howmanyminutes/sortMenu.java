@@ -35,7 +35,7 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 		ListPreference areaPref = (ListPreference)findPreference("AREA");
 		if (null == areaPref.getValue()) {
 			areaPref.setDefaultValue("area_tdl");
-			areaPref.setSummary("ディズニーランド");
+			areaPref.setSummary(getResources().getString(R.string.disney_land));
 		}
 		else {
 			areaPref.setSummary(areaPref.getEntry());
@@ -45,7 +45,7 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 		ListPreference waitPref = (ListPreference)findPreference("WAIT");
 		if (null == waitPref.getValue()) {
 			waitPref.setDefaultValue("wait_not");
-			waitPref.setSummary("指定なし");
+			waitPref.setSummary(getResources().getString(R.string.not_select));
 		}
 		else {
 			waitPref.setSummary(waitPref.getEntry());
@@ -55,7 +55,7 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 		ListPreference sortPref = (ListPreference)findPreference("SORT");
 		if (null == sortPref.getValue()) {
 			sortPref.setDefaultValue("sort_not");			
-			sortPref.setSummary("指定なし");
+			sortPref.setSummary(getResources().getString(R.string.not_select));
 		}
 		else {
 			sortPref.setSummary(sortPref.getEntry());
