@@ -983,16 +983,17 @@ containing a value of this type.
         public static final int abs__title=0x7f04001b;
         public static final int abs__titleDivider=0x7f04001c;
         public static final int abs__up=0x7f04000b;
+        public static final int area_name=0x7f040037;
         public static final int atrcList=0x7f040033;
-        public static final int atrc_name=0x7f040037;
+        public static final int atrc_name=0x7f040038;
         public static final int bookmark=0x7f040036;
         public static final int disableHome=0x7f040009;
         public static final int edit_query=0x7f040027;
-        public static final int fp=0x7f040039;
-        public static final int fpIcon=0x7f040038;
+        public static final int fp=0x7f04003a;
+        public static final int fpIcon=0x7f040039;
         public static final int homeAsUp=0x7f040006;
         public static final int listMode=0x7f040002;
-        public static final int menu_settings=0x7f04003e;
+        public static final int menu_settings=0x7f04003f;
         public static final int nend=0x7f040034;
         public static final int normal=0x7f040001;
         public static final int run=0x7f040035;
@@ -1000,11 +1001,11 @@ containing a value of this type.
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
         public static final int tabMode=0x7f040003;
-        public static final int update=0x7f04003d;
+        public static final int update=0x7f04003e;
         public static final int useLogo=0x7f040004;
-        public static final int wait=0x7f04003b;
-        public static final int waitLabel1=0x7f04003a;
-        public static final int waitLabel2=0x7f04003c;
+        public static final int wait=0x7f04003c;
+        public static final int waitLabel1=0x7f04003b;
+        public static final int waitLabel2=0x7f04003d;
         public static final int wrap_content=0x7f040000;
     }
     public static final class integer {
@@ -1091,21 +1092,23 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f090009;
         public static final int app_name=0x7f090012;
-        public static final int atrc_msg_fp_pass_end=0x7f090024;
-        public static final int atrc_msg_run_ok=0x7f090026;
-        public static final int atrc_msg_update=0x7f090025;
+        public static final int atrc_msg_fp_pass_end=0x7f090026;
+        public static final int atrc_msg_run_ok=0x7f090028;
+        public static final int atrc_msg_update=0x7f090027;
         public static final int btn_label_hai=0x7f090019;
         public static final int btn_label_iie=0x7f09001a;
         public static final int btn_label_ok=0x7f090018;
         public static final int dialog_msg_delete=0x7f090023;
         public static final int dialog_msg_regist=0x7f090022;
+        public static final int dialog_msg_update=0x7f090024;
+        public static final int dialog_title_update=0x7f090025;
         public static final int disney_land=0x7f09001f;
         public static final int disney_sea=0x7f090020;
         public static final int error_msg_conect=0x7f090021;
-        public static final int filter_msg_area=0x7f090028;
-        public static final int filter_msg_bookmark=0x7f090027;
-        public static final int filter_msg_sort=0x7f09002a;
-        public static final int filter_msg_wait=0x7f090029;
+        public static final int filter_msg_area=0x7f09002a;
+        public static final int filter_msg_bookmark=0x7f090029;
+        public static final int filter_msg_sort=0x7f09002c;
+        public static final int filter_msg_wait=0x7f09002b;
         /** Replace placeholder ID with your tracking ID
          */
         public static final int ga_trackingId=0x7f09000f;
@@ -1119,6 +1122,8 @@ containing a value of this type.
         public static final int net_kakiflower_howmanyminutes_sortMenu=0x7f090011;
         public static final int not_select=0x7f09001e;
         public static final int now_park_close=0x7f090017;
+        public static final int string_minute=0x7f09002e;
+        public static final int string_wait_time=0x7f09002d;
         public static final int target_atrc_not=0x7f09001b;
         public static final int title_activity_main=0x7f090015;
         public static final int title_activity_sort_menu=0x7f090016;

@@ -16,10 +16,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -99,15 +104,14 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     	super.onCreate(savedInstanceState);
 
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
-    	
+    	// ActionSherlockデフォルトテーマ
 		setTheme(R.style.Theme_Sherlock);
 
 		// アイコンなし
         getSupportActionBar().setIcon(android.R.color.transparent);
 
         // アクティビティをセット
-        setContentView(R.layout.activity_main);        
+        setContentView(R.layout.activity_main);
     }
 
     /*
@@ -165,11 +169,11 @@ public class main extends SherlockActivity implements OnItemClickListener{
         
         menu.add(getResources().getString(R.string.menu_label_reload))
             .setIcon(android.R.drawable.ic_menu_rotate)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         menu.add(getResources().getString(R.string.menu_label_pref))
         	.setIcon(android.R.drawable.ic_menu_preferences)
-        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        	.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 
         return true;
     }
@@ -223,7 +227,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     	// 更新処理
     	this._reload();
-
+    	
     	// 更新回数ログを収集
     	sp = PreferenceManager.getDefaultSharedPreferences(this);
         int reload_num = sp.getInt("reload", 0);
@@ -327,6 +331,10 @@ public class main extends SherlockActivity implements OnItemClickListener{
     		if (rootJson == null) return false; 
 
     		int status = rootJson.getInt("status");
+    		int ver = rootJson.getInt("ver");
+    		
+        	// アプリの最新バージョンチェック
+        	this._appVersionCheck(ver);
 
 			// 開園状況 true:開演中, false:閉園中
 			openFlg = (200 == status ? true : false);
@@ -384,8 +392,11 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     	// 並び替え
         String sortPtn = sp.getString("SORT", "sort_not");
-        if ("sort_wait".equals(sortPtn)) {
+        if ("sort_wait_short".equals(sortPtn)) {
         	this._waitTimeShortOrder();        	
+        }
+        else if ("sort_wait_long".equals(sortPtn)) {
+        	this._waitTimeLongOrder();        	
         }
         else if ("sort_update".equals(sortPtn)) {
         	this._updateTimeNewOrder();        	
@@ -462,7 +473,16 @@ public class main extends SherlockActivity implements OnItemClickListener{
      * 並び替え：待ち時間の短い順
      */
     private void _waitTimeShortOrder() {
-    	Collections.sort(this.atrcList, new waitTimeComprator());    	
+    	Collections.sort(this.atrcList, new waitTimeShortComprator());    	
+    	// 解析タグ
+    	EasyTracker.getTracker().sendEvent("filter", "button_press", "wait_order", (long)0);
+    }
+
+    /*
+     * 並び替え：待ち時間の長い順
+     */
+    private void _waitTimeLongOrder() {
+    	Collections.sort(this.atrcList, new waitTimeLongComprator());    	
     	// 解析タグ
     	EasyTracker.getTracker().sendEvent("filter", "button_press", "wait_order", (long)0);
     }
@@ -551,8 +571,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
          * 紐付けたCustomAdapterを作成する
          */
         this.ca = new CustomAdapter(this, data, R.layout.row,
-        		new String[]{"atrc_name", "fp", "run", "update", "wait", "bookmark"},
-        		new int[]{R.id.atrc_name, R.id.fp, R.id.run, R.id.update, R.id.wait, R.id.bookmark}
+        		new String[]{"area_name", "atrc_name", "fp", "run", "update", "wait", "bookmark"},
+        		new int[]{R.id.area_name, R.id.atrc_name, R.id.fp, R.id.run, R.id.update, R.id.wait, R.id.bookmark}
         );
 
         // activity_main.xmlのListViewにカスタムアダプタをセット
@@ -712,7 +732,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			mLayoutInflater = LayoutInflater.from( getBaseContext() );
-			
+						
 			// レイアウトに「row.xml」を紐づける
 			convertView = mLayoutInflater.inflate(R.layout.row, parent, false);
 			ListView listView = (ListView)parent;
@@ -720,6 +740,13 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			@SuppressWarnings("unchecked")
 			// 該当位置のデータを取得
 			Map<String, Object> data = (Map<String, Object>) listView.getItemAtPosition(position);
+
+			// 背景色
+			listView.setBackgroundColor(Color.GRAY);
+			
+			// エリア名
+			TextView area_name = (TextView)convertView.findViewById(R.id.area_name);
+			area_name.setText("[" + (String)data.get("area_name") + "]");
 
 			// アトラクション名
 			TextView atrc_name = (TextView)convertView.findViewById(R.id.atrc_name);
@@ -812,7 +839,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	/*
 	 * 待ち時間の短い順にソートする処理を実装
 	 */
-	public class waitTimeComprator implements Comparator<atrcData>{
+	public class waitTimeShortComprator implements Comparator<atrcData>{
 		
 		@Override
 		public int compare(atrcData lhs, atrcData rhs) {
@@ -824,6 +851,24 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			int wait2 = atrc2.getWait().equals("") ? 0 : Integer.parseInt(atrc2.getWait());
 			
 			return wait1 < wait2 ? -1 : 1;
+		}
+	}
+
+	/*
+	 * 待ち時間の長い順にソートする処理を実装
+	 */
+	public class waitTimeLongComprator implements Comparator<atrcData>{
+		
+		@Override
+		public int compare(atrcData lhs, atrcData rhs) {
+			atrcData atrc1 = (atrcData)lhs;
+			atrcData atrc2 = (atrcData)rhs;
+			
+			// 待ち時間データが空の場合は０分とする
+			int wait1 = atrc1.getWait().equals("") ? 0 : Integer.parseInt(atrc1.getWait());
+			int wait2 = atrc2.getWait().equals("") ? 0 : Integer.parseInt(atrc2.getWait());
+			
+			return wait1 < wait2 ? 1 : -1;
 		}
 	}
 
@@ -867,7 +912,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 		}
 	}
 	
-	/*
+	/**
 	 * ネットワーク接続状態を返却する 
 	 */
     public boolean isConnected() {
@@ -879,4 +924,60 @@ public class main extends SherlockActivity implements OnItemClickListener{
         }
         return false;
     }
+    
+    /**
+     * バージョンコードを取得する
+     */
+    private int getVersionCode(){
+    	Context context = this.getApplicationContext();
+    	PackageManager pm = context.getPackageManager();
+        int versionCode = 0;
+        try{
+            PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+            versionCode = packageInfo.versionCode;
+        }catch(NameNotFoundException e){
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+    
+    /**
+     * アプリのバージョンが最新ではない場合、インストールを促す
+     */
+    private void _appVersionCheck(int newVer) {
+
+        int nowVer = getVersionCode();
+
+        final String pacageName = this.getPackageName();
+        // バージョンチェック
+        if (newVer > nowVer) {
+    	
+	    	// お知らせ用ダイアログ
+			AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+			// アラートダイアログのキャンセル不可
+	        alertDialogBuilder.setCancelable(false);
+	        
+			alertDialogBuilder.setTitle(getResources().getString(R.string.dialog_title_update));
+			alertDialogBuilder.setMessage(getResources().getString(R.string.dialog_msg_update));
+
+			// はい
+			alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_hai),
+	                new DialogInterface.OnClickListener() {
+	            @Override
+	            public void onClick(DialogInterface dialog, int which) {
+	            	 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + pacageName));
+	            	 try{
+	            		 startActivity(intent);
+	            	 }catch (Exception e){
+	            	     e.printStackTrace();
+	            	 }
+	            }
+	        });
+
+			AlertDialog alertDialog = alertDialogBuilder.create();
+	        alertDialog.show();        	
+        }
+        
+   }
 }

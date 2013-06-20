@@ -4,7 +4,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">main</string>
-    <string name="title_activity_sort_menu">絞り込みメニュー</string>
+    <string name="title_activity_sort_menu">設定</string>
 	<string name="now_park_close">現在は閉園中です。</string>
 	<string name="btn_label_ok">ＯＫ</string>
 	<string name="btn_label_hai">はい</string>
@@ -13,18 +13,23 @@
 	<string name="menu_label_reload">更新</string>
 	<string name="menu_label_pref">設定</string>
 	<string name="not_select">設定なし</string>
-	<string name="disney_land">ディズニーランド</string>		
-	<string name="disney_sea">ディズニーシー</string>		
+	<string name="disney_land">東京ﾃﾞｨｽﾞﾆ−ﾗﾝﾄﾞ</string>		
+	<string name="disney_sea">東京ﾃﾞｨｽﾞﾆ−ｼ−</string>
 	<string name="error_msg_conect">通信に失敗しました。\nインターネット接続状態を確認してください。</string>
  	<string name="dialog_msg_regist">\n\nお気に入りに登録しますか？</string>		
  	<string name="dialog_msg_delete">\n\nお気に入りから削除しますか？</string>
- 	<string name="atrc_msg_fp_pass_end">現在発券しておりません</string>	
- 	<string name="atrc_msg_update">更新時間</string>
+	<string name="dialog_msg_update">新しいバージョンが見つかりました。\nアップデートしますか？</string>		
+	<string name="dialog_title_update">ソフトウェア更新</string>
+	<string name="atrc_msg_fp_pass_end">現在発券しておりません</string>	
+ 	<string name="atrc_msg_update">更新</string>
  	<string name="atrc_msg_run_ok">運営中</string>
  	<string name="filter_msg_bookmark">お気に入りのみ表示</string>
  	<string name="filter_msg_area">エリアの指定</string>
  	<string name="filter_msg_wait">待ち時間で絞り込むの指定</string> 		
  	<string name="filter_msg_sort">条件で並び替え</string>
+ 	<string name="string_wait_time">待ち時間</string>
+ 	<string name="string_minute">分</string>
+ 			
  		
 <!-- 	<string name=""></string> -->
 						
@@ -44,19 +49,21 @@
     <string-array name="sort_list">
         <item >指定なし</item>
         <item >待ち時間の短い順</item>
+        <item >待ち時間の長い順</item>
         <item >更新時間が新しい順</item>
         <item >ファストパス対応のみ</item>
     </string-array>
     <string-array name="sort_list_values">
         <item >sort_not</item>
-        <item >sort_wait</item>
+        <item >sort_wait_short</item>
+        <item >sort_wait_long</item>
         <item >sort_update</item>
         <item >sort_fp</item>
     </string-array>
 
 	<string-array name="area_list">
-        <item >ディズニーランド</item>
-        <item >ディズニーシー</item>
+        <item >東京ディズニーランド</item>
+        <item >東京ディズニーシー</item>
     </string-array>
     <string-array name="area_list_values">
         <item >area_tdl</item>
