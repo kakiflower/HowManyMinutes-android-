@@ -25,11 +25,11 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -87,14 +87,17 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				
 				// オープンしていない場合、絞り込み０件の場合にポップアップを表示
 				openCheck();
+				
+				// 運営状態の変更チェック、変更が有る場合はポップアップ表示
+				_chkRunChange();
 			}
 			else {
 				
 				// タイトル設定
 				_setTitleBarName();
 				
-				// ネットワークエラー表示
-				netWorkErrorDialog();
+	        	// ネットワークエラーダイアログ
+	        	showDialog("",getResources().getString(R.string.error_msg_conect));
 			}
 		}
 	};
@@ -247,12 +250,12 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	sp = PreferenceManager.getDefaultSharedPreferences(this);
         
         // タイトルに表示しているエリア「ディズニーランド/ディズニーシー」を設定
-    	String title = sp.getString("AREA", "area_tds");
-        if ("area_tds".equals(title) ||  "".equals(title)) {
-            getSupportActionBar().setTitle(getResources().getString(R.string.disney_sea));
+    	String title = sp.getString("AREA", "area_tdl");
+        if ("area_tdl".equals(title) ||  "".equals(title)) {
+            getSupportActionBar().setTitle(getResources().getString(R.string.disney_land));
         }
         else {
-            getSupportActionBar().setTitle(getResources().getString(R.string.disney_land));
+            getSupportActionBar().setTitle(getResources().getString(R.string.disney_sea));
         }
     }
 
@@ -267,13 +270,13 @@ public class main extends SherlockActivity implements OnItemClickListener{
         // 読込み先URLを指定
         String useUrl;
 
-        // ディズニーシー
-        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
-        	useUrl = this.tdsUrl;
-        }
         // ディズニーランド
-        else {
+        if ("area_tdl".equals(sp.getString("AREA", "area_tdl"))) {
         	useUrl = this.tdlUrl;
+        }
+        // ディズニーシー
+        else {
+        	useUrl = this.tdsUrl;
         }
 
         // ネットワーク未接続の場合はダイアログ表示
@@ -285,18 +288,26 @@ public class main extends SherlockActivity implements OnItemClickListener{
         }
         else {
         	
-        	// ネットワークエラー用ダイアログ
-        	netWorkErrorDialog();
+        	// ネットワークエラーダイアログ
+        	showDialog("",getResources().getString(R.string.error_msg_conect));
         }
     }
 
     /*
      * ネットワークエラーダイアログ表示
+     * @param String title タイトル
+     * @param String msg   ダイアログ表示用のメッセージ
      */
-    public void netWorkErrorDialog() {
+    public void showDialog(String title, String msg) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-		alertDialogBuilder.setMessage(getResources().getString(R.string.error_msg_conect));
+
+		// 指定が有る場合のみタイトル表示
+		if (!"".equals(title)) {
+			alertDialogBuilder.setTitle(title);
+		}
+
+		alertDialogBuilder.setMessage(msg);
         alertDialogBuilder.setPositiveButton(getResources().getString(R.string.btn_label_ok),
                 new DialogInterface.OnClickListener() {
             @Override
@@ -380,7 +391,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
         }
 
     	// 解析タグ：ディズニーランド or ディズニーシー
-        if ("area_tds".equals(sp.getString("AREA", "area_tds"))) {
+        if ("area_tdl".equals(sp.getString("AREA", "area_tdl"))) {
         	EasyTracker.getTracker().sendEvent("filter", "area", "land", (long)0);
         }
         else {
@@ -390,8 +401,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
         // 待ち時間絞り込み(0：指定なし, 1：30分以内, 2：31分〜60分以内, 3：61分以降)
     	this._waitTimeBetweenOrder();
 
-    	// 並び替え
-        String sortPtn = sp.getString("SORT", "sort_not");
+    	// 並び替え(デフォルト：待ち時間の長い順)
+        String sortPtn = sp.getString("SORT", "sort_wait_long");
         if ("sort_wait_short".equals(sortPtn)) {
         	this._waitTimeShortOrder();        	
         }
@@ -405,7 +416,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
         	this._fpAtrcOnly();
         }
         else {
-        	// 指定なし
+        	// 指定なし(テーマポート別）
         }
     	
     }
@@ -526,7 +537,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
     	int i = 0;
     	while(i < this.atrcList.size()) {
     		atrcData tmp = this.atrcList.get(i);
-    		if (!this._isMyAttraction(tmp.getAtrc_name())) {
+    		if (!this._isMyAttraction(tmp.getArea_name(), tmp.getAtrc_name())) {
     			this.atrcList.remove(i);
     		}
     		else {
@@ -601,8 +612,9 @@ public class main extends SherlockActivity implements OnItemClickListener{
         // アラートダイアログのメッセージを設定します
         String q;
         String atrcName = atrcData_tmp.getAtrc_name();
+        String areaName = atrcData_tmp.getArea_name();
         // メッセージタイプ種類を設定
-        if (_isMyAttraction(atrcName)) {
+        if (_isMyAttraction(areaName, atrcName)) {
         	q = atrcName + getResources().getString(R.string.dialog_msg_delete);
         }
         else {
@@ -642,10 +654,10 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	                	data.remove(_pos);
 
                     	// 現在のお気に入り状態を取得する
-                    	Boolean visibleFlg = _isMyAttraction(tmp.getAtrc_name());
+                    	Boolean visibleFlg = _isMyAttraction(tmp.getArea_name(), tmp.getAtrc_name());
                     	
                 		// SharedPreferenceにお気に入り情報を保存
-                		_saveMyAttraction(tmp.getAtrc_name(), !visibleFlg);
+                		_saveMyAttraction(tmp.getArea_name(), tmp.getAtrc_name(), !visibleFlg);
 
 	                	// ブックマーク表示限定かつブックマーク解除の場合はセルを追加しない。
                         // お気に入りアトラクションのみ表示
@@ -685,33 +697,147 @@ public class main extends SherlockActivity implements OnItemClickListener{
 		
 	}
 
-	/*
+	/**
+	 * 更新前と更新後で運営状態に変化がないかチェック、変更がある場合はダイアログ表示を行う
+	 */
+	private void _chkRunChange() {
+
+		// 閉園中はチェック対象外
+		if (!this.openFlg) return;
+		
+		// SharedPreferencesの取得
+		sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        SharedPreferences.Editor editor = sp.edit();
+        
+        // 時間取得
+        Time time = new Time("Asia/Tokyo");
+        time.setToNow();
+        int now_date = time.month + time.monthDay;
+
+        // 最新の運営状況
+        String nowRun;
+        
+        // 前回の運営状況
+        String prevRun;
+
+    	// アトラクション情報
+    	atrcData atrc;
+        
+        // 最終利用日を取得
+        int prev_date;
+        
+        // 日付保存対象
+        String key;
+        
+        // ディズニーランド
+        if ("area_tdl".equals(sp.getString("AREA", "area_tdl"))) {
+            key = "save_tdl";
+            prev_date = sp.getInt(key, 0);
+        }
+        // ディズニーシー
+        else {
+        	key = "save_tds";
+        	prev_date = sp.getInt(key, 0);
+        }
+
+        // 最終利用日が異なる場合は初回アクセス扱いとし終了
+        if (now_date != prev_date || prev_date == 0) {
+        	
+    		// 今日の日付を最終利用日とする
+    		editor.putInt(key, now_date);
+
+    		// 現在の運営状況を初期値として保存する
+    		for (int i = 0; i < this.atrcList.size(); i++) {
+
+    			
+            	// 選択されたアトラクション情報
+            	atrc = this.atrcList.get(i);
+
+            	// 運営状況＋エリア名＋アトラクション名
+            	nowRun = atrc.getRun() + "," + atrc.getArea_name() + "," + atrc.getAtrc_name();    			
+
+            	// 保存キー名は「エリア名＋アトラクション名」
+            	editor.putString(atrc.getArea_name() + atrc.getAtrc_name(), nowRun);
+
+    		}
+
+    		// 保存
+    		editor.commit();
+    		
+    		return;
+        }
+
+        // ポップアップ用メッセージ
+		String msg, area_name, atrc_name, run;
+		String[] run_status;
+
+		// 運営状況が変わっている場合はダイアログを表示(アトラクションの数だけ繰り返す。)
+		for (int i = 0; i < this.atrcList.size(); i++) {
+			
+        	// 選択されたアトラクション情報
+        	atrc = this.atrcList.get(i);
+        	area_name = atrc.getArea_name();
+        	atrc_name = atrc.getAtrc_name();
+        	run = atrc.getRun();
+        	
+        	// 保存キー名は「エリア名＋アトラクション名」
+        	prevRun = sp.getString(area_name + atrc_name, "");
+			nowRun = run + "," + area_name + "," + atrc_name;
+
+			// 変更がある場合
+			if (!prevRun.equals(nowRun) && !"".equals(nowRun)) {
+
+				// 前回の運営状況のみ取り出し
+				run_status = prevRun.split(",");
+
+				msg = atrc_name + "\n";
+				msg += "(" + area_name + ")\n\n";
+				msg += getResources().getString(R.string.dialog_msg_before) + "\n" + run_status[0] + "\n\n";
+				msg += getResources().getString(R.string.dialog_msg_after) + "(" + getResources().getString(R.string.menu_label_reload) + " " + atrc.getUpdate() + ")\n" + run;
+				showDialog(getResources().getString(R.string.dialog_title_chk_update), msg);
+			}
+			
+        	// 運営状況＋エリア名＋アトラクション名
+        	nowRun = run + "," + area_name + "," + atrc_name;    			
+
+        	// 保存キー名は「エリア名＋アトラクション名」
+        	editor.putString(area_name + atrc_name, nowRun);
+		}
+		
+        editor.commit();
+
+	}
+	
+	/**
 	 * ローカルにお気に入りアトラクション情報を保存する
 	 * 
+	 * @param String areaName エリア名
 	 * @param String atrcName アトラクション名
 	 * @param Boolean true:保存する, false:保存しない
 	 */
-	private void _saveMyAttraction(String atrcName, Boolean mode) {
+	private void _saveMyAttraction(String areaName, String atrcName, Boolean mode) {
 
 		// SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        editor.putBoolean(atrcName, mode);
+        editor.putBoolean(areaName + atrcName, mode);
         editor.commit();
 	}
 	
-	/*
+	/**
 	 * ローカルに保存されたお気に入りアトラクション情報を取得する
 	 * 
+	 * @param String areaName エリア名
 	 * @param String atrcName アトラクション名
 	 * @return Boolean true  引数で指定されたアトラクションがお気に入りに保存されている
 	 *                 false 引数で指定されたアトラクションがお気に入りに保存されていない
 	 */
-	private Boolean _isMyAttraction(String atrcName) {
+	private Boolean _isMyAttraction(String areaName, String atrcName) {
 
 		// SharedPreferencesの取得
         sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
-        return sp.getBoolean(atrcName, false);
+        return sp.getBoolean(areaName + atrcName, false);
 	}	
 	
 	/*
@@ -747,7 +873,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			// エリア名
 			TextView area_name = (TextView)convertView.findViewById(R.id.area_name);
 			area_name.setText("[" + (String)data.get("area_name") + "]");
-
+			area_name.setTextColor(themeNameToThemeColor((String)data.get("area_name")));
+			
 			// アトラクション名
 			TextView atrc_name = (TextView)convertView.findViewById(R.id.atrc_name);
 			atrc_name.setText((String)data.get("atrc_name"));
@@ -756,7 +883,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			ImageView bookmark = (ImageView)convertView.findViewById(R.id.bookmark);
 
 			// 空の場合は表示
-			if (_isMyAttraction((String)data.get("atrc_name"))) {
+			if (_isMyAttraction((String)data.get("area_name"), (String)data.get("atrc_name"))) {
 				bookmark.setVisibility(View.VISIBLE);
 			}
 			else {
@@ -828,10 +955,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 				wait.setVisibility(View.GONE);
 				waitLabel2.setVisibility(View.GONE);
 			}
-
-			// 表示フラグ
-			//
-			
+						
 			return convertView;
 		}
 	}
@@ -980,4 +1104,61 @@ public class main extends SherlockActivity implements OnItemClickListener{
         }
         
    }
+    /**
+     * テーマランド名からテーマランドカラー文字列を返却する
+     */
+    private int themeNameToThemeColor(String themeName) {
+
+    	String textColor;
+
+    	// TDL
+    	if (themeName.equals(getResources().getString(R.string.theme_name_wb))) {
+    		textColor = getResources().getString(R.string.theme_color_wb);
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_al))) {
+    		textColor = getResources().getString(R.string.theme_color_al);    		
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_wl))) {
+    		textColor = getResources().getString(R.string.theme_color_wl);    		
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_cc))) {
+    		textColor = getResources().getString(R.string.theme_color_cc);    		
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_fl))) {
+    		textColor = getResources().getString(R.string.theme_color_fl);    		
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_tt))) {
+    		textColor = getResources().getString(R.string.theme_color_tt);    		
+    	}
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_tl))) {
+    		textColor = getResources().getString(R.string.theme_color_tl);    		
+    	}
+    	// TDS
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_mh))) {
+    		textColor = getResources().getString(R.string.theme_color_mh);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_aw))) {
+    		textColor = getResources().getString(R.string.theme_color_aw);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_pd))) {
+    		textColor = getResources().getString(R.string.theme_color_pd);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_ld))) {
+    		textColor = getResources().getString(R.string.theme_color_ld);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_ac))) {
+    		textColor = getResources().getString(R.string.theme_color_ac);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_ml))) {
+    		textColor = getResources().getString(R.string.theme_color_ml);    		
+    	}    	
+    	else if(themeName.equals(getResources().getString(R.string.theme_name_mi))) {
+    		textColor = getResources().getString(R.string.theme_color_mi);    		
+    	}
+    	else {
+    		textColor = "#000000";
+    	}
+
+    	return Color.parseColor(textColor); 
+    }
 }

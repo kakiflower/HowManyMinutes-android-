@@ -1,41 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="7872f2e1-66fe-47fb-b8ff-da3cdcbd604f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/HowManyMinutes(android).iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/dexedLibs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/gradle_wrapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/libs.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/net.kakiflower.howmanyminutes.main.apk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/bin/dexedLibs/library-25601999ed9f562a3b0ec0df270f41ee.jar" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/gen/com/actionbarsherlock/R.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/BuildConfig.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/BuildConfig.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/JSONClient.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/JSONClient.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$attr.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$attr.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$bool.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$bool.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$color.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$color.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$dimen.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$dimen.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$drawable.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$drawable.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$id.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$id.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/libs/android-support-v4.jar" afterPath="$PROJECT_DIR$/libs/android-support-v4.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes.dex" afterPath="$PROJECT_DIR$/bin/classes.dex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$integer.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$integer.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$layout.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$layout.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$menu.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$menu.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$string.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$string.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$style.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$style.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$styleable.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/R$styleable.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/dexedLibs/android-support-v4-0621875e402534df82c2dec611a58d25.jar" afterPath="$PROJECT_DIR$/bin/dexedLibs/android-support-v4-0621875e402534df82c2dec611a58d25.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/dexedLibs/annotations-5f34b6f223ad04aea30e0abe05622369.jar" afterPath="$PROJECT_DIR$/bin/dexedLibs/annotations-5f34b6f223ad04aea30e0abe05622369.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/dexedLibs/libGoogleAnalyticsV2-4cac79c6dd318c0296116ed58f56d371.jar" afterPath="$PROJECT_DIR$/bin/dexedLibs/libGoogleAnalyticsV2-4cac79c6dd318c0296116ed58f56d371.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$1.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$2.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$3.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$4.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$5.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$6.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$6.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$7.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$7.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$CustomAdapter.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$CustomAdapter.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$updateTimeComprator.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$updateTimeComprator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeComprator.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeComprator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeLongComprator.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeLongComprator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeShortComprator.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main$waitTimeShortComprator.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/resources.ap_" afterPath="$PROJECT_DIR$/bin/resources.ap_" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/dexedLibs/nendSDK-2.1.0-dc842ab03afeb1948778a4c39da6fc4b.jar" afterPath="$PROJECT_DIR$/bin/dexedLibs/nendSDK-2.1.0-dc842ab03afeb1948778a4c39da6fc4b.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/sortMenu.class" afterPath="$PROJECT_DIR$/bin/classes/net/kakiflower/howmanyminutes/sortMenu.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.classpath" afterPath="$PROJECT_DIR$/.classpath" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/AndroidManifest.xml" afterPath="$PROJECT_DIR$/bin/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/net/kakiflower/howmanyminutes/BuildConfig.java" afterPath="$PROJECT_DIR$/gen/net/kakiflower/howmanyminutes/BuildConfig.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HowManyMinutes(android).iml" afterPath="$PROJECT_DIR$/HowManyMinutes(android).iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen/net/kakiflower/howmanyminutes/R.java" afterPath="$PROJECT_DIR$/gen/net/kakiflower/howmanyminutes/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/activity_main.xml" afterPath="$PROJECT_DIR$/res/layout/activity_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/jarlist.cache" afterPath="$PROJECT_DIR$/bin/jarlist.cache" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/R.txt" afterPath="$PROJECT_DIR$/bin/R.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/main.java" afterPath="$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/row.xml" afterPath="$PROJECT_DIR$/res/layout/row.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/sortMenu.java" afterPath="$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/sortMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/strings.xml" afterPath="$PROJECT_DIR$/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/layout/titlebar.xml" afterPath="$PROJECT_DIR$/res/layout/titlebar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/values/theme.xml" afterPath="$PROJECT_DIR$/res/values/theme.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="HowManyMinute.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="7872f2e1-66fe-47fb-b8ff-da3cdcbd604f" time="1370787802393" ignored="false" />
+    <file path="/Dummy.txt" changelist="7872f2e1-66fe-47fb-b8ff-da3cdcbd604f" time="1371986459176" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,6 +114,30 @@
   <component name="FavoritesManager">
     <favorites_list name="HowManyMinute" />
   </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="main.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="6" column="8" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sortMenu.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/sortMenu.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="12" column="10" selection-start="471" selection-end="471" vertical-scroll-proportion="0.49046323">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
   <component name="FindManager">
     <FindUsagesManager>
       <setting name="OPEN_NEW_TAB" value="false" />
@@ -105,6 +149,13 @@
   <component name="GitLogSettings">
     <option name="myDateState">
       <MyDateState />
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/res/values/theme.xml" />
+      </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
@@ -153,16 +204,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HowManyMinute" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="HowManyMinutes(android)" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -171,12 +212,20 @@
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
-    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="MemberChooser.sorted" value="false" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="options.lastSelected" value="preferences.intentionPowerPack" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/library" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RunManager" selected="Android Application.HowManyMinutes(android)">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -328,11 +377,13 @@
       <updated>1370785551087</updated>
       <workItem from="1370785555313" duration="815000" />
       <workItem from="1370787799690" duration="1243000" />
+      <workItem from="1371982319038" duration="519000" />
+      <workItem from="1371986453619" duration="485000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2058000" />
+    <option name="totallyTimeSpent" value="3062000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="8" y="31" width="1346" height="728" extended-state="0" />
@@ -344,24 +395,25 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="バージョン管理" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="実行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="バージョン管理" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="実行" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.67105263" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="デバッグ" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2753846" sideWeight="0.67105263" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="デバッグ" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="メッセージ" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32894737" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32894737" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -423,6 +475,132 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/res/values/theme.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="32" selection-start="1214" selection-end="1214" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/values/theme.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="51" selection-end="51" vertical-scroll-proportion="0.05154639">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="8" selection-start="161" selection-end="161" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/net/kakiflower/howmanyminutes/sortMenu.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="10" selection-start="471" selection-end="471" vertical-scroll-proportion="0.49046323">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>HowManyMinutes(android)</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>Android 4.2.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>dexedLibs</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
 

@@ -13,8 +13,6 @@ public final class R {
         public static final int area_list_values=0x7f0b0005;
         public static final int sort_list=0x7f0b0002;
         public static final int sort_list_values=0x7f0b0003;
-        /**  	<string name=""></string> 
-         */
         public static final int wait_list=0x7f0b0000;
         public static final int wait_list_values=0x7f0b0001;
     }
@@ -1092,23 +1090,26 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f090009;
         public static final int app_name=0x7f090012;
-        public static final int atrc_msg_fp_pass_end=0x7f090026;
-        public static final int atrc_msg_run_ok=0x7f090028;
-        public static final int atrc_msg_update=0x7f090027;
+        public static final int atrc_msg_fp_pass_end=0x7f09002b;
+        public static final int atrc_msg_run_ok=0x7f09002d;
+        public static final int atrc_msg_update=0x7f09002c;
         public static final int btn_label_hai=0x7f090019;
         public static final int btn_label_iie=0x7f09001a;
         public static final int btn_label_ok=0x7f090018;
-        public static final int dialog_msg_delete=0x7f090023;
-        public static final int dialog_msg_regist=0x7f090022;
-        public static final int dialog_msg_update=0x7f090024;
-        public static final int dialog_title_update=0x7f090025;
-        public static final int disney_land=0x7f09001f;
-        public static final int disney_sea=0x7f090020;
-        public static final int error_msg_conect=0x7f090021;
-        public static final int filter_msg_area=0x7f09002a;
-        public static final int filter_msg_bookmark=0x7f090029;
-        public static final int filter_msg_sort=0x7f09002c;
-        public static final int filter_msg_wait=0x7f09002b;
+        public static final int dialog_msg_after=0x7f090028;
+        public static final int dialog_msg_before=0x7f090027;
+        public static final int dialog_msg_delete=0x7f090025;
+        public static final int dialog_msg_regist=0x7f090024;
+        public static final int dialog_msg_update=0x7f090026;
+        public static final int dialog_title_chk_update=0x7f090029;
+        public static final int dialog_title_update=0x7f09002a;
+        public static final int disney_land=0x7f090021;
+        public static final int disney_sea=0x7f090022;
+        public static final int error_msg_conect=0x7f090023;
+        public static final int filter_msg_area=0x7f09002f;
+        public static final int filter_msg_bookmark=0x7f09002e;
+        public static final int filter_msg_sort=0x7f090031;
+        public static final int filter_msg_wait=0x7f090030;
         /** Replace placeholder ID with your tracking ID
          */
         public static final int ga_trackingId=0x7f09000f;
@@ -1121,10 +1122,40 @@ containing a value of this type.
         public static final int net_kakiflower_howmanyminutes_main=0x7f090010;
         public static final int net_kakiflower_howmanyminutes_sortMenu=0x7f090011;
         public static final int not_select=0x7f09001e;
+        public static final int not_select_sort=0x7f09001f;
         public static final int now_park_close=0x7f090017;
-        public static final int string_minute=0x7f09002e;
-        public static final int string_wait_time=0x7f09002d;
+        public static final int select_sort_wait_long=0x7f090020;
+        public static final int string_minute=0x7f090033;
+        public static final int string_wait_time=0x7f090032;
         public static final int target_atrc_not=0x7f09001b;
+        public static final int theme_color_ac=0x7f09004d;
+        public static final int theme_color_al=0x7f09003c;
+        public static final int theme_color_aw=0x7f09004a;
+        public static final int theme_color_cc=0x7f09003e;
+        public static final int theme_color_fl=0x7f09003f;
+        public static final int theme_color_ld=0x7f09004c;
+        public static final int theme_color_mh=0x7f090049;
+        public static final int theme_color_mi=0x7f09004f;
+        public static final int theme_color_ml=0x7f09004e;
+        public static final int theme_color_pd=0x7f09004b;
+        public static final int theme_color_tl=0x7f090041;
+        public static final int theme_color_tt=0x7f090040;
+        public static final int theme_color_wb=0x7f09003b;
+        public static final int theme_color_wl=0x7f09003d;
+        public static final int theme_name_ac=0x7f090046;
+        public static final int theme_name_al=0x7f090035;
+        public static final int theme_name_aw=0x7f090043;
+        public static final int theme_name_cc=0x7f090037;
+        public static final int theme_name_fl=0x7f090038;
+        public static final int theme_name_ld=0x7f090045;
+        public static final int theme_name_mh=0x7f090042;
+        public static final int theme_name_mi=0x7f090048;
+        public static final int theme_name_ml=0x7f090047;
+        public static final int theme_name_pd=0x7f090044;
+        public static final int theme_name_tl=0x7f09003a;
+        public static final int theme_name_tt=0x7f090039;
+        public static final int theme_name_wb=0x7f090034;
+        public static final int theme_name_wl=0x7f090036;
         public static final int title_activity_main=0x7f090015;
         public static final int title_activity_sort_menu=0x7f090016;
     }
@@ -1164,8 +1195,6 @@ containing a value of this type.
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Large=0x7f0a0042;
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f0a0044;
         public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f0a0046;
-        public static final int Theme_MyAppTheme=0x7f0a0059;
-        public static final int Theme_MyAppTheme_ActionBar=0x7f0a005a;
         public static final int Theme_Sherlock=0x7f0a0052;
         public static final int Theme_Sherlock_Dialog=0x7f0a0057;
         public static final int Theme_Sherlock_Light=0x7f0a0053;

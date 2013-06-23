@@ -13,26 +13,59 @@
 	<string name="menu_label_reload">更新</string>
 	<string name="menu_label_pref">設定</string>
 	<string name="not_select">設定なし</string>
+	<string name="not_select_sort">テーマポート別</string>
+	<string name="select_sort_wait_long">待ち時間の長い順</string>
 	<string name="disney_land">東京ﾃﾞｨｽﾞﾆ−ﾗﾝﾄﾞ</string>		
 	<string name="disney_sea">東京ﾃﾞｨｽﾞﾆ−ｼ−</string>
 	<string name="error_msg_conect">通信に失敗しました。\nインターネット接続状態を確認してください。</string>
  	<string name="dialog_msg_regist">\n\nお気に入りに登録しますか？</string>		
  	<string name="dialog_msg_delete">\n\nお気に入りから削除しますか？</string>
-	<string name="dialog_msg_update">新しいバージョンが見つかりました。\nアップデートしますか？</string>		
+	<string name="dialog_msg_update">新しいバージョンが見つかりました。\nアップデートしますか？</string>
+	<string name="dialog_msg_before">■ 変更前</string>
+	<string name="dialog_msg_after">■ 変更後</string>
+	<string name="dialog_title_chk_update">運行状況の変更お知らせ</string>
 	<string name="dialog_title_update">ソフトウェア更新</string>
 	<string name="atrc_msg_fp_pass_end">現在発券しておりません</string>	
  	<string name="atrc_msg_update">更新</string>
  	<string name="atrc_msg_run_ok">運営中</string>
  	<string name="filter_msg_bookmark">お気に入りのみ表示</string>
  	<string name="filter_msg_area">エリアの指定</string>
- 	<string name="filter_msg_wait">待ち時間で絞り込むの指定</string> 		
+ 	<string name="filter_msg_wait">待ち時間での絞り込み</string> 		
  	<string name="filter_msg_sort">条件で並び替え</string>
  	<string name="string_wait_time">待ち時間</string>
  	<string name="string_minute">分</string>
- 			
+
+ 	<string name="theme_name_wb">ワールドバザール</string>
+ 	<string name="theme_name_al">アドベンチャーランド</string>
+ 	<string name="theme_name_wl">ウエスタンランド</string>
+ 	<string name="theme_name_cc">クリッターカントリー</string>
+ 	<string name="theme_name_fl">ファンタジーランド</string>
+ 	<string name="theme_name_tt">トゥーンタウン</string>
+ 	<string name="theme_name_tl">トゥモローランド</string> 	
+ 	<string name="theme_color_wb">#E64364</string>
+ 	<string name="theme_color_al">#008a2a</string>
+ 	<string name="theme_color_wl">#7c2724</string>
+ 	<string name="theme_color_cc">#c06700</string>
+ 	<string name="theme_color_fl">#931c7c</string>
+ 	<string name="theme_color_tt">#ff8a00</string>
+ 	<string name="theme_color_tl">#20349a</string> 	
+
+ 	<string name="theme_name_mh">メディテレーニアンハーバー</string>
+ 	<string name="theme_name_aw">アメリカンウォーターフロント</string>
+ 	<string name="theme_name_pd">ポートディスカバリー</string>
+ 	<string name="theme_name_ld">ロストリバーデルタ</string>
+ 	<string name="theme_name_ac">アラビアンコースト</string>
+ 	<string name="theme_name_ml">マーメイドラグーン</string>
+ 	<string name="theme_name_mi">ミステリアスアイランド</string> 	
+ 	<string name="theme_color_mh">#994D05</string>
+ 	<string name="theme_color_aw">#B8001C</string>
+ 	<string name="theme_color_pd">#C29D00</string>
+ 	<string name="theme_color_ld">#006422</string>
+ 	<string name="theme_color_ac">#552C88</string>
+ 	<string name="theme_color_ml">#EF747B</string>
+ 	<string name="theme_color_mi">#007D77</string> 	
  		
-<!-- 	<string name=""></string> -->
-						
+ 						
     <string-array name="wait_list">
         <item >指定なし</item>
         <item >３０分以内</item>
@@ -47,7 +80,7 @@
     </string-array>
     
     <string-array name="sort_list">
-        <item >指定なし</item>
+        <item >テーマポートごとに</item>
         <item >待ち時間の短い順</item>
         <item >待ち時間の長い順</item>
         <item >更新時間が新しい順</item>

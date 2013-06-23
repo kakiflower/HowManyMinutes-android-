@@ -54,8 +54,10 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 		// 条件で並べ替え
 		ListPreference sortPref = (ListPreference)findPreference("SORT");
 		if (null == sortPref.getValue()) {
-			sortPref.setDefaultValue("sort_not");			
-			sortPref.setSummary(getResources().getString(R.string.not_select));
+
+			// 初期状態は「待ち時間の長い順」
+			sortPref.setDefaultValue("sort_wait_long");			
+			sortPref.setSummary(getResources().getString(R.string.select_sort_wait_long));
 		}
 		else {
 			sortPref.setSummary(sortPref.getEntry());
