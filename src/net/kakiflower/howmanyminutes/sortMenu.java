@@ -1,10 +1,17 @@
 package net.kakiflower.howmanyminutes;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
+import android.util.Log;
+
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -16,21 +23,37 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
-  
+
     	// テーマを適用
 		setTheme(R.style.Theme_Sherlock);
 
-		super.onCreate(savedInstanceState);
-
 		// 透明なアイコンを表示
         getSupportActionBar().setIcon(android.R.color.transparent);
+
+    	super.onCreate(savedInstanceState);
+		
+        // 初期処理
+        this.init();
+
+    }
+
+	 /**
+	  * 初期処理
+	  */
+	 public void init() {
+
+        // SharedPreferencesの取得
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+		// 言語設定(前回設定の言語を優先)
+    	this.setLocale(sp.getString("LANGUAGE", Locale.getDefault().toString()));
+    	
+    	// タイトルの設定
+    	getSupportActionBar().setTitle(getResources().getString(R.string.title_activity_sort_menu));
     	
     	// レイアウトを割り当て
-        addPreferencesFromResource(R.layout.filter);
-        
-        // SharedPreferencesの取得
-        sp = getSharedPreferences("sort", Context.MODE_PRIVATE);
-
+        addPreferencesFromResource(R.layout.filter);        
+    	
 		// エリア
 		ListPreference areaPref = (ListPreference)findPreference("AREA");
 		if (null == areaPref.getValue()) {
@@ -63,7 +86,18 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 			sortPref.setSummary(sortPref.getEntry());
 		}
 
-    }
+		// 言語設定
+		ListPreference langPref = (ListPreference)findPreference("LANGUAGE");
+		if (null == langPref.getValue()) {
+
+			// 初期は現在端末に設定されている値とする
+//			langPref.setDefaultValue(Locale.getDefault().toString());			
+//			langPref.setSummary(getResources().getString(R.string.not_select));
+		}
+		else {
+			langPref.setSummary(langPref.getEntry());
+		} 
+	 }
 
     /*
      * アクションバー生成
@@ -90,7 +124,7 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 	        }
 	        return super.onOptionsItemSelected(item);
 	 }
-    
+    	 
     /*
      * ListPreferenceのサマリーを選択されたアイテムに差し替える
      * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences, java.lang.String)
@@ -112,6 +146,18 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 		else if (key.equals("SORT")) {
 			ListPreference sortPref = (ListPreference)getPreferenceScreen().findPreference("SORT");
 			sortPref.setSummary(sortPref.getEntry());
+		}
+		// 言語設定
+		else if (key.equals("LANGUAGE")){
+			ListPreference langPref = (ListPreference)getPreferenceScreen().findPreference("LANGUAGE");
+			langPref.setSummary(langPref.getEntry());
+			
+			// レイアウト削除
+		 	PreferenceScreen prefScreen = getPreferenceScreen();
+			prefScreen.removeAll();
+
+			// 切替後の言語で初期化
+			this.init();
 		}
 	}
     
@@ -137,5 +183,18 @@ public class sortMenu extends SherlockPreferenceActivity implements OnSharedPref
 	protected void onPause() {  
 	    super.onPause();  
 	    getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);  
-	}  
+	}
+	
+    /**
+     * 指定された言語を設定する
+     * @param lang 言語
+     */
+	void setLocale(String lang){
+		Locale locale = new Locale(lang);
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getResources().updateConfiguration(config, null);
+	}
+	
 }

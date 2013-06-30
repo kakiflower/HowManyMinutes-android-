@@ -103,7 +103,7 @@ public class JSONClient extends AsyncTask<String, Void, JSONObject>{
     @Override
     public void onPreExecute() {
         progressDialog = new ProgressDialog(curContext);
-        progressDialog.setMessage("最新情報を取得中…");
+        progressDialog.setMessage(curContext.getResources().getString(R.string.now_update));
         progressDialog.setCancelable(false);
         progressDialog.setIndeterminate(true);
         progressDialog.show();

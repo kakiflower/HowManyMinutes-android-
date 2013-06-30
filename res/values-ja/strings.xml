@@ -1,0 +1,119 @@
+<resources>
+
+    <string name="app_name">何分待ち？</string>
+	<string name="now_update">最新情報を取得中…</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">main</string>
+    <string name="title_activity_sort_menu">設定</string>
+	<string name="now_park_close">現在は閉園中です。</string>
+	<string name="btn_label_ok">ＯＫ</string>
+	<string name="btn_label_hai">はい</string>
+	<string name="btn_label_iie">いいえ</string>
+	<string name="target_atrc_not">対象のアトラクションはありません。</string>
+	<string name="menu_label_reload">更新</string>
+	<string name="menu_label_pref">設定</string>
+	<string name="not_select">設定なし</string>
+	<string name="not_select_sort">テーマポート別</string>
+	<string name="select_sort_wait_long">待ち時間の長い順</string>
+	<string name="disney_land">東京ﾃﾞｨｽﾞﾆ−ﾗﾝﾄﾞ</string>		
+	<string name="disney_sea">東京ﾃﾞｨｽﾞﾆ−ｼ−</string>
+	<string name="error_msg_conect">通信に失敗しました。\nインターネット接続状態を確認してください。</string>
+ 	<string name="dialog_msg_regist">\n\nお気に入りに登録しますか？</string>		
+ 	<string name="dialog_msg_delete">\n\nお気に入りから削除しますか？</string>
+	<string name="dialog_msg_update">新しいバージョンが見つかりました。\nアップデートしますか？</string>
+	<string name="dialog_msg_before">■ 変更前</string>
+	<string name="dialog_msg_after">■ 変更後</string>
+	<string name="dialog_title_chk_update">運行状況の変更お知らせ</string>
+	<string name="dialog_title_update">ソフトウェア更新</string>
+	<string name="atrc_msg_fp_pass_end">現在発券しておりません</string>	
+ 	<string name="atrc_msg_update">更新</string>
+ 	<string name="atrc_msg_run_ok">運営中</string>
+ 	<string name="filter_msg_bookmark">お気に入りのみ表示</string>
+ 	<string name="filter_msg_area">エリアの指定</string>
+ 	<string name="filter_msg_wait">待ち時間での絞り込み</string> 		
+ 	<string name="filter_msg_sort">条件で並び替え</string>
+ 	<string name="string_wait_time">待ち時間</string>
+ 	<string name="string_minute">分</string>
+ 	<string name="string_language_setting">言語設定</string>
+
+ 	<string name="theme_name_wb">ワールドバザール</string>
+ 	<string name="theme_name_al">アドベンチャーランド</string>
+ 	<string name="theme_name_wl">ウエスタンランド</string>
+ 	<string name="theme_name_cc">クリッターカントリー</string>
+ 	<string name="theme_name_fl">ファンタジーランド</string>
+ 	<string name="theme_name_tt">トゥーンタウン</string>
+ 	<string name="theme_name_tl">トゥモローランド</string> 	
+ 	<string name="theme_color_wb">#E64364</string>
+ 	<string name="theme_color_al">#008a2a</string>
+ 	<string name="theme_color_wl">#7c2724</string>
+ 	<string name="theme_color_cc">#c06700</string>
+ 	<string name="theme_color_fl">#931c7c</string>
+ 	<string name="theme_color_tt">#ff8a00</string>
+ 	<string name="theme_color_tl">#20349a</string> 	
+
+ 	<string name="theme_name_mh">メディテレーニアンハーバー</string>
+ 	<string name="theme_name_aw">アメリカンウォーターフロント</string>
+ 	<string name="theme_name_pd">ポートディスカバリー</string>
+ 	<string name="theme_name_ld">ロストリバーデルタ</string>
+ 	<string name="theme_name_ac">アラビアンコースト</string>
+ 	<string name="theme_name_ml">マーメイドラグーン</string>
+ 	<string name="theme_name_mi">ミステリアスアイランド</string> 	
+ 	<string name="theme_color_mh">#994D05</string>
+ 	<string name="theme_color_aw">#B8001C</string>
+ 	<string name="theme_color_pd">#C29D00</string>
+ 	<string name="theme_color_ld">#006422</string>
+ 	<string name="theme_color_ac">#552C88</string>
+ 	<string name="theme_color_ml">#EF747B</string>
+ 	<string name="theme_color_mi">#007D77</string> 	
+ 		
+ 						
+    <string-array name="wait_list">
+        <item >指定なし</item>
+        <item >３０分以内</item>
+        <item >６０分以内</item>
+        <item >１２０分以内</item>
+    </string-array>
+    <string-array name="wait_list_values">
+        <item >wait_not</item>
+        <item >wait_30minute</item>
+        <item >wait_60minute</item>
+        <item >wait_120minute</item>
+    </string-array>
+    
+    <string-array name="sort_list">
+        <item >テーマポートごとに</item>
+        <item >待ち時間の短い順</item>
+        <item >待ち時間の長い順</item>
+        <item >更新時間が新しい順</item>
+        <item >ファストパス対応のみ</item>
+    </string-array>
+    <string-array name="sort_list_values">
+        <item >sort_not</item>
+        <item >sort_wait_short</item>
+        <item >sort_wait_long</item>
+        <item >sort_update</item>
+        <item >sort_fp</item>
+    </string-array>
+
+	<string-array name="area_list">
+        <item >東京ディズニーランド</item>
+        <item >東京ディズニーシー</item>
+    </string-array>
+    <string-array name="area_list_values">
+        <item >area_tdl</item>
+        <item >area_tds</item>
+    </string-array>
+    <string-array name="language_list">
+        <item >日本語</item>
+        <item >英語</item>
+        <item >韓国語</item>
+        <item >中国語</item>
+	</string-array>
+    <string-array name="language_list_values">
+        <item >ja_jp</item>
+        <item >en</item>
+        <item >kr</item>
+        <item >ch</item>
+	</string-array>
+    
+</resources>

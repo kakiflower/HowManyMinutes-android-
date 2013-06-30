@@ -5,7 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,20 +22,23 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -40,16 +46,23 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.ad_stir.AdstirTerminate;
+import com.ad_stir.AdstirView;
 import com.google.analytics.tracking.android.EasyTracker;
 
 public class main extends SherlockActivity implements OnItemClickListener{
 
+	// 広告関連
+    LinearLayout adLayout;
+	AdstirView adstirView;
+	Timer adTimer;
+	
 	// 絞り込み条件
 	SharedPreferences sp;
 	
 	// JSONデータ取得先
-	private String tdlUrl = "http://www.kakiflower.net/app/how-many-minute/tdl.php";
-	private String tdsUrl = "http://www.kakiflower.net/app/how-many-minute/tds.php";
+	private String tdlUrl = "http://www.kakiflower.net/app/how-many-minute-test/tdl.php";
+	private String tdsUrl = "http://www.kakiflower.net/app/how-many-minute-test/tds.php";
 
 	// 最後に選択したリスト番号
 	private int _pos;
@@ -101,7 +114,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			}
 		}
 	};
-
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -115,8 +128,33 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
         // アクティビティをセット
         setContentView(R.layout.activity_main);
+
+        // 定期的に広告を読み直す
+        adTimer = new Timer();
+        TimerTask timerTask = new AdTimerTask(this);
+        adTimer.scheduleAtFixedRate(timerTask, 0, 30000);
+        
+        // 広告用レイアウトを生成
+        adLayout = (LinearLayout)findViewById(R.id.adLayout);
     }
 
+    /**
+     * 広告の生成
+     */
+    private void addAd() {
+    	
+    	// 広告が既に表示されている場合は破棄したうえで生成
+    	if (null != this.adstirView) {
+    		AdstirTerminate.init(this);
+    		adLayout.removeAllViews();
+    		adstirView = null;
+    	}
+
+    	// 広告生成
+		this.adstirView = new AdstirView(this, "MEDIA-69d42e91", 1);
+		adLayout.addView(this.adstirView, new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+    }
+    
     /*
      * 対象のアトラクションが存在しない場合ダイアログを表示、再度絞り込みメニューへ
      */
@@ -200,13 +238,17 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	        return super.onOptionsItemSelected(item);
 	 }
 
-    @Override
-    public void onStart() {
+	 @Override
+    protected void onStart() {
 
     	// タイトルバー用のエリア名を設定
     	this._setTitleBarName();
     	
-    	// 最新の待ち時間JSONデータを取得
+    	// 言語設定を反映
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);    	
+    	this.setLocale(sp.getString("LANGUAGE", Locale.getDefault().toString()));
+
+        // 最新の待ち時間JSONデータを取得
     	// (ソート画面からバックして来た場合も強制的にリロード処理)
     	this._reload();
     	
@@ -215,11 +257,16 @@ public class main extends SherlockActivity implements OnItemClickListener{
     }
 
     @Override
-    public void onStop() {
+    protected void onStop() {
     	super.onStop();
     	EasyTracker.getInstance().activityStop(this);
     }
     
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	AdstirTerminate.init(this);
+    }
     /*
      * 「更新」ボタンが押された時
      */
@@ -264,6 +311,9 @@ public class main extends SherlockActivity implements OnItemClickListener{
      */
     private void _reload(){
     	
+    	// 広告の生成
+//    	this.addAd();
+    	
         // SharedPreferencesの取得
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
         
@@ -277,6 +327,18 @@ public class main extends SherlockActivity implements OnItemClickListener{
         // ディズニーシー
         else {
         	useUrl = this.tdsUrl;
+        }
+        // SharedPreferencesの取得
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // 端末の言語設定により取得JSONパラメタを付与
+        if ("ja_JP".equals(sp.getString("LANGUAGE", Locale.getDefault().toString())) ||
+        	"ja_jp".equals(sp.getString("LANGUAGE", Locale.getDefault().toString()))) {
+
+            // 日本語の処理
+        } else {
+            // 日本語以外(英語)の処理
+        	useUrl += "?lang=en";
         }
 
         // ネットワーク未接続の場合はダイアログ表示
@@ -294,7 +356,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
     }
 
     /*
-     * ネットワークエラーダイアログ表示
+     * ダイアログ表示(OKのみ)
      * @param String title タイトル
      * @param String msg   ダイアログ表示用のメッセージ
      */
@@ -732,12 +794,12 @@ public class main extends SherlockActivity implements OnItemClickListener{
         
         // ディズニーランド
         if ("area_tdl".equals(sp.getString("AREA", "area_tdl"))) {
-            key = "save_tdl";
+            key = "save_tdl_" + sp.getString("LANGUAGE", Locale.getDefault().toString());
             prev_date = sp.getInt(key, 0);
         }
         // ディズニーシー
         else {
-        	key = "save_tds";
+        	key = "save_tds_" + sp.getString("LANGUAGE", Locale.getDefault().toString());
         	prev_date = sp.getInt(key, 0);
         }
 
@@ -787,7 +849,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
 			// 変更がある場合
 			if (!prevRun.equals(nowRun) && !"".equals(nowRun)) {
-
+				
 				// 前回の運営状況のみ取り出し
 				run_status = prevRun.split(",");
 
@@ -874,7 +936,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
 			TextView area_name = (TextView)convertView.findViewById(R.id.area_name);
 			area_name.setText("[" + (String)data.get("area_name") + "]");
 			area_name.setTextColor(themeNameToThemeColor((String)data.get("area_name")));
-			
+
 			// アトラクション名
 			TextView atrc_name = (TextView)convertView.findViewById(R.id.atrc_name);
 			atrc_name.setText((String)data.get("atrc_name"));
@@ -1161,4 +1223,40 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     	return Color.parseColor(textColor); 
     }
+    /**
+     * 指定された言語を設定する
+     * @param lang 言語
+     */
+	void setLocale(String lang){
+		Locale locale = new Locale(lang);
+		Locale.setDefault(locale);
+		Configuration config = new Configuration();
+		config.locale = locale;
+		getResources().updateConfiguration(config, null);
+	}
+	
+	/**
+	 * 広告タイマー処理
+	 */
+	public class AdTimerTask extends TimerTask {
+		  private Handler handler;
+		  private Context context;
+		    
+		  public AdTimerTask(Context context) {
+		    handler = new Handler();
+		    this.context = context;
+		  }
+		    
+		  @Override
+		  public void run() {
+		    handler.post(new Runnable() {
+		      @Override
+		      public void run() {
+		        ((main)context).addAd();
+		      }
+		    });
+		  }
+		 
+		}
 }
+

@@ -7,5 +7,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/library"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="libs/adstir.jar"/>
+	<classpathentry kind="lib" path="libs/GoogleAdMobAdsSdk-6.4.1.jar"/>
+	<classpathentry kind="lib" path="libs/adlantis.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -27,5 +27,12 @@
 		android:dialogTitle="@string/filter_msg_sort"
 		android:entries="@array/sort_list"
 		android:entryValues="@array/sort_list_values" />
-	
+
+		<ListPreference
+		android:key="LANGUAGE"
+		android:title="@string/string_language_setting"
+		android:dialogTitle="@string/string_language_setting"
+		android:entries="@array/language_list"
+		android:entryValues="@array/language_list_values" />
+			
 </PreferenceScreen>
