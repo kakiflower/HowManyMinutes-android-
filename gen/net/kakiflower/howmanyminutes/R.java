@@ -164,6 +164,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
          */
         public static final int background=0x7f010002;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int backgroundColor=0x7f01006c;
         /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -236,6 +245,14 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int expandActivityOverflowButtonDrawable=0x7f01005e;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int fade=0x7f01006a;
         /**  Default background for the menu header. 
          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -384,6 +401,14 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 </table>
          */
         public static final int navigationMode=0x7f010048;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int pid=0x7f010062;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
@@ -422,6 +447,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int queryHint=0x7f010060;
+        /** <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int refreshInterval=0x7f01006d;
         /**  SearchView AutoCompleteTextView style 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -488,6 +521,47 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int selectableItemBackground=0x7f01001a;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int shadowColor=0x7f010069;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int shadowDx=0x7f010066;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int shadowDy=0x7f010067;
+        /** <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int shadowRadius=0x7f010068;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int sid=0x7f010061;
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
@@ -547,6 +621,15 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
+        public static final int textColor=0x7f010064;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
         public static final int textColorPrimary=0x7f01001f;
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
@@ -586,6 +669,23 @@ containing a value of this type.
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int titleTextStyle=0x7f010000;
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int urlColor=0x7f010065;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int vcptn=0x7f010063;
         /**  Default vertical divider between menu items. 
          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
@@ -662,6 +762,14 @@ theme attribute (in the form
 containing a value of this type.
          */
         public static final int windowSplitActionBar=0x7f010044;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int wipe=0x7f01006b;
     }
     public static final class bool {
         public static final int abs__action_bar_embed_tabs=0x7f050000;
@@ -3385,5 +3493,231 @@ containing a value of this type.
           @attr name android:android_focusable
         */
         public static final int SherlockView_android_focusable = 0;
+        /** Attributes that can be used with a com_valuecommerce_vcads_VCAdView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_backgroundColor net.kakiflower.howmanyminutes:backgroundColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_fade net.kakiflower.howmanyminutes:fade}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_pid net.kakiflower.howmanyminutes:pid}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_refreshInterval net.kakiflower.howmanyminutes:refreshInterval}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_shadowColor net.kakiflower.howmanyminutes:shadowColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_shadowDx net.kakiflower.howmanyminutes:shadowDx}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_shadowDy net.kakiflower.howmanyminutes:shadowDy}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_shadowRadius net.kakiflower.howmanyminutes:shadowRadius}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_sid net.kakiflower.howmanyminutes:sid}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_textColor net.kakiflower.howmanyminutes:textColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_urlColor net.kakiflower.howmanyminutes:urlColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_vcptn net.kakiflower.howmanyminutes:vcptn}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_valuecommerce_vcads_VCAdView_wipe net.kakiflower.howmanyminutes:wipe}</code></td><td></td></tr>
+           </table>
+           @see #com_valuecommerce_vcads_VCAdView_backgroundColor
+           @see #com_valuecommerce_vcads_VCAdView_fade
+           @see #com_valuecommerce_vcads_VCAdView_pid
+           @see #com_valuecommerce_vcads_VCAdView_refreshInterval
+           @see #com_valuecommerce_vcads_VCAdView_shadowColor
+           @see #com_valuecommerce_vcads_VCAdView_shadowDx
+           @see #com_valuecommerce_vcads_VCAdView_shadowDy
+           @see #com_valuecommerce_vcads_VCAdView_shadowRadius
+           @see #com_valuecommerce_vcads_VCAdView_sid
+           @see #com_valuecommerce_vcads_VCAdView_textColor
+           @see #com_valuecommerce_vcads_VCAdView_urlColor
+           @see #com_valuecommerce_vcads_VCAdView_vcptn
+           @see #com_valuecommerce_vcads_VCAdView_wipe
+         */
+        public static final int[] com_valuecommerce_vcads_VCAdView = {
+            0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064,
+            0x7f010065, 0x7f010066, 0x7f010067, 0x7f010068,
+            0x7f010069, 0x7f01006a, 0x7f01006b, 0x7f01006c,
+            0x7f01006d
+        };
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#backgroundColor}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:backgroundColor
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_backgroundColor = 11;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#fade}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:fade
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_fade = 9;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#pid}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:pid
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_pid = 1;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#refreshInterval}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be an integer value, such as "<code>100</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:refreshInterval
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_refreshInterval = 12;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#shadowColor}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:shadowColor
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_shadowColor = 8;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#shadowDx}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:shadowDx
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_shadowDx = 5;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#shadowDy}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:shadowDy
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_shadowDy = 6;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#shadowRadius}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a floating point value, such as "<code>1.2</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:shadowRadius
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_shadowRadius = 7;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#sid}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:sid
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_sid = 0;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#textColor}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:textColor
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_textColor = 3;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#urlColor}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:urlColor
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_urlColor = 4;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#vcptn}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:vcptn
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_vcptn = 2;
+        /**
+          <p>This symbol is the offset where the {@link net.kakiflower.howmanyminutes.R.attr#wipe}
+          attribute's value can be found in the {@link #com_valuecommerce_vcads_VCAdView} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:wipe
+        */
+        public static final int com_valuecommerce_vcads_VCAdView_wipe = 10;
     };
 }

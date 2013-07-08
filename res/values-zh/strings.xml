@@ -1,0 +1,119 @@
+<resources>
+
+    <string name="app_name">东京迪斯尼排列的时间</string>
+	<string name="now_update">最新信息取得中…</string>
+    <string name="menu_settings">设定</string>
+    <string name="title_activity_main">main</string>
+    <string name="title_activity_sort_menu">设定</string>
+	<string name="now_park_close">今天关闭了。</string>
+	<string name="btn_label_ok">是</string>
+	<string name="btn_label_hai">是</string>
+	<string name="btn_label_iie">不</string>
+	<string name="target_atrc_not">對象游乐设施没有</string>
+	<string name="menu_label_reload">更新</string>
+	<string name="menu_label_pref">设定</string>
+	<string name="not_select">没有设定</string>
+	<string name="not_select_sort">按主题端口</string>
+	<string name="select_sort_wait_long">等候时间长的顺序</string>
+	<string name="disney_land">东京迪士尼乐园</string>		
+	<string name="disney_sea">东京迪士尼海洋</string>
+	
+	<string name="error_msg_conect">为通信失败了。\n请确认因特网连接状态。</string>
+ 	<string name="dialog_msg_regist">\n\n是不是喜欢地登记？</string>		
+ 	<string name="dialog_msg_delete">\n\n从喜爱删除？</string>
+	<string name="dialog_msg_update">新的版本找到了。\n是不是更新？</string>
+	<string name="dialog_msg_before">■ 变更前</string>
+	<string name="dialog_msg_after">■ 变更后</string>
+	<string name="dialog_title_chk_update">运行状况的变更告知</string>
+	<string name="dialog_title_update">软件更新</string>
+	<string name="atrc_msg_fp_pass_end">没发行</string>	
+ 	<string name="atrc_msg_update">更新</string>
+ 	<string name="atrc_msg_run_ok">营业着</string>
+ 	<string name="filter_msg_bookmark">喜爱喝表示</string>
+ 	<string name="filter_msg_area">区域的指定</string>
+ 	<string name="filter_msg_wait">在等候时间的缩小</string> 		
+ 	<string name="filter_msg_sort">由于条件排列调换</string>
+ 	<string name="string_wait_time">等候时间</string>
+ 	<string name="string_minute">分</string>
+ 	<string name="string_language_setting">语言设定</string>
+
+ 	<string name="theme_name_wb">世界市集</string>
+ 	<string name="theme_name_al">探险乐园</string>
+ 	<string name="theme_name_wl">西部乐园</string>
+ 	<string name="theme_name_cc">动物天地</string>
+ 	<string name="theme_name_fl">梦幻乐园</string>
+ 	<string name="theme_name_tt">卡通城</string>
+ 	<string name="theme_name_tl">明日乐园</string> 	
+ 	<string name="theme_color_wb">#E64364</string>
+ 	<string name="theme_color_al">#008a2a</string>
+ 	<string name="theme_color_wl">#7c2724</string>
+ 	<string name="theme_color_cc">#c06700</string>
+ 	<string name="theme_color_fl">#931c7c</string>
+ 	<string name="theme_color_tt">#ff8a00</string>
+ 	<string name="theme_color_tl">#20349a</string> 	
+
+ 	<string name="theme_name_mh">地中海港湾</string>
+ 	<string name="theme_name_aw">美国海滨</string>
+ 	<string name="theme_name_pd">发现港</string>
+ 	<string name="theme_name_ld">失落河三角洲</string>
+ 	<string name="theme_name_ac">阿拉伯海岸</string>
+ 	<string name="theme_name_ml">美人鱼礁湖</string>
+ 	<string name="theme_name_mi">神秘岛</string> 	
+ 	<string name="theme_color_mh">#994D05</string>
+ 	<string name="theme_color_aw">#B8001C</string>
+ 	<string name="theme_color_pd">#C29D00</string>
+ 	<string name="theme_color_ld">#006422</string>
+ 	<string name="theme_color_ac">#552C88</string>
+ 	<string name="theme_color_ml">#EF747B</string>
+ 	<string name="theme_color_mi">#007D77</string> 	
+				
+    <string-array name="wait_list">
+        <item >没有指定</item>
+        <item >３０分以内</item>
+        <item >６０分以内</item>
+        <item >１２０分以内</item>
+    </string-array>
+    <string-array name="wait_list_values">
+        <item >wait_not</item>
+        <item >wait_30minute</item>
+        <item >wait_60minute</item>
+        <item >wait_120minute</item>
+    </string-array>
+    
+    <string-array name="sort_list">
+        <item >每主题端口</item>
+        <item >等候时间短的顺序</item>
+        <item >等候时间长的顺序</item>
+        <item >更新时间新的顺序</item>
+        <item >只迪士尼快速通行对应</item>
+    </string-array>
+    <string-array name="sort_list_values">
+        <item >sort_not</item>
+        <item >sort_wait_short</item>
+        <item >sort_wait_long</item>
+        <item >sort_update</item>
+        <item >sort_fp</item>
+    </string-array>
+
+	<string-array name="area_list">
+        <item >东京迪士尼乐园</item>
+        <item >东京迪士尼海洋</item>
+    </string-array>
+    <string-array name="area_list_values">
+        <item >area_tdl</item>
+        <item >area_tds</item>
+    </string-array>
+    <string-array name="language_list">
+        <item >日语</item>
+        <item >英语</item>
+        <item >中文(繁体)</item>
+        <item >中文(简体)</item>
+	</string-array>
+    <string-array name="language_list_values">
+        <item >ja</item>
+        <item >en</item>
+        <item >zh_TW</item>
+        <item >zh</item>
+	</string-array>
+    
+</resources>

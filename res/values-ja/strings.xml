@@ -106,14 +106,14 @@
     <string-array name="language_list">
         <item >日本語</item>
         <item >英語</item>
-        <item >韓国語</item>
-        <item >中国語</item>
+        <item >中文(繁体)</item>
+        <item >中文(簡体)</item>
 	</string-array>
     <string-array name="language_list_values">
-        <item >ja_jp</item>
+        <item >ja</item>
         <item >en</item>
-        <item >kr</item>
-        <item >ch</item>
+        <item >zh_TW</item>
+        <item >zh</item>
 	</string-array>
     
 </resources>

@@ -31,6 +31,7 @@ int attr actionSpinnerItemStyle 0x7f01003f
 int attr activatedBackgroundIndicator 0x7f010047
 int attr activityChooserViewStyle 0x7f010046
 int attr background 0x7f010002
+int attr backgroundColor 0x7f01006c
 int attr backgroundSplit 0x7f010003
 int attr backgroundStacked 0x7f01004e
 int attr buttonStyleSmall 0x7f010019
@@ -41,6 +42,7 @@ int attr dividerVertical 0x7f010038
 int attr dropDownListViewStyle 0x7f01003c
 int attr dropdownListPreferredItemHeight 0x7f01003e
 int attr expandActivityOverflowButtonDrawable 0x7f01005e
+int attr fade 0x7f01006a
 int attr headerBackground 0x7f010058
 int attr height 0x7f010004
 int attr homeAsUpIndicator 0x7f01003b
@@ -60,11 +62,13 @@ int attr listPreferredItemPaddingLeft 0x7f010033
 int attr listPreferredItemPaddingRight 0x7f010034
 int attr logo 0x7f01004d
 int attr navigationMode 0x7f010048
+int attr pid 0x7f010062
 int attr popupMenuStyle 0x7f01003d
 int attr preserveIconSpacing 0x7f01005c
 int attr progressBarPadding 0x7f010053
 int attr progressBarStyle 0x7f010051
 int attr queryHint 0x7f010060
+int attr refreshInterval 0x7f01006d
 int attr searchAutoCompleteTextView 0x7f010024
 int attr searchDropdownBackground 0x7f010025
 int attr searchResultListItemHeight 0x7f01002f
@@ -77,6 +81,11 @@ int attr searchViewTextField 0x7f01002c
 int attr searchViewTextFieldRight 0x7f01002d
 int attr searchViewVoiceIcon 0x7f010029
 int attr selectableItemBackground 0x7f01001a
+int attr shadowColor 0x7f010069
+int attr shadowDx 0x7f010066
+int attr shadowDy 0x7f010067
+int attr shadowRadius 0x7f010068
+int attr sid 0x7f010061
 int attr spinnerDropDownItemStyle 0x7f010023
 int attr spinnerItemStyle 0x7f010022
 int attr subtitle 0x7f01004b
@@ -87,12 +96,15 @@ int attr textAppearanceSearchResultSubtitle 0x7f010031
 int attr textAppearanceSearchResultTitle 0x7f010030
 int attr textAppearanceSmall 0x7f01001e
 int attr textAppearanceSmallPopupMenu 0x7f01001d
+int attr textColor 0x7f010064
 int attr textColorPrimary 0x7f01001f
 int attr textColorPrimaryDisableOnly 0x7f010020
 int attr textColorPrimaryInverse 0x7f010021
 int attr textColorSearchUrl 0x7f01002e
 int attr title 0x7f01004a
 int attr titleTextStyle 0x7f010000
+int attr urlColor 0x7f010065
+int attr vcptn 0x7f010063
 int attr verticalDivider 0x7f010057
 int attr windowActionBar 0x7f010041
 int attr windowActionBarOverlay 0x7f010042
@@ -103,6 +115,7 @@ int attr windowMinWidthMajor 0x7f010036
 int attr windowMinWidthMinor 0x7f010037
 int attr windowNoTitle 0x7f010040
 int attr windowSplitActionBar 0x7f010044
+int attr wipe 0x7f01006b
 int bool abs__action_bar_embed_tabs 0x7f050000
 int bool abs__action_bar_expanded_action_views_exclusive 0x7f050002
 int bool abs__config_actionMenuItemAllCaps 0x7f050004
@@ -676,3 +689,17 @@ int styleable SherlockTheme_windowNoTitle 59
 int styleable SherlockTheme_windowSplitActionBar 63
 int[] styleable SherlockView { 0x010100da }
 int styleable SherlockView_android_focusable 0
+int[] styleable com_valuecommerce_vcads_VCAdView { 0x7f010061, 0x7f010062, 0x7f010063, 0x7f010064, 0x7f010065, 0x7f010066, 0x7f010067, 0x7f010068, 0x7f010069, 0x7f01006a, 0x7f01006b, 0x7f01006c, 0x7f01006d }
+int styleable com_valuecommerce_vcads_VCAdView_backgroundColor 11
+int styleable com_valuecommerce_vcads_VCAdView_fade 9
+int styleable com_valuecommerce_vcads_VCAdView_pid 1
+int styleable com_valuecommerce_vcads_VCAdView_refreshInterval 12
+int styleable com_valuecommerce_vcads_VCAdView_shadowColor 8
+int styleable com_valuecommerce_vcads_VCAdView_shadowDx 5
+int styleable com_valuecommerce_vcads_VCAdView_shadowDy 6
+int styleable com_valuecommerce_vcads_VCAdView_shadowRadius 7
+int styleable com_valuecommerce_vcads_VCAdView_sid 0
+int styleable com_valuecommerce_vcads_VCAdView_textColor 3
+int styleable com_valuecommerce_vcads_VCAdView_urlColor 4
+int styleable com_valuecommerce_vcads_VCAdView_vcptn 2
+int styleable com_valuecommerce_vcads_VCAdView_wipe 10

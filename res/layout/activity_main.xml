@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:vcads="http://schemas.android.com/apk/res/net.kakiflower.howmanyminutes"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -25,41 +27,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
 		android:gravity="bottom|center">
-
- 	    <!-- AdLantis -->
-		<!--
- 	    <jp.adlantis.android.AdlantisView
-    android:id="@+id/adView"
-    android:layout_width="fill_parent" 
-    android:layout_height="50dp" />
- 	    -->
- 	    <!-- Adstir -->
- 	    <!--  
+<!--
  	    <com.ad_stir.AdstirView
   			media="MEDIA-69d42e91"
   			spot="1"
   			android:layout_width="wrap_content"
   			android:layout_height="wrap_content" />
-		-->
-		<!-- AppBank -->
-<!-- 
-		<net.nend.android.NendAdView
-			android:id="@+id/nend"
-			android:layout_width="wrap_content"
-			android:layout_height="50dp"
-            NendApiKey="c89fc14808069f0509b9c2decfc8e72e58282331"
-            NendSpotId="58424"
-			/>
 -->
-		<!-- Nend -->
-		<!-- 
-		<net.nend.android.NendAdView
-			android:id="@+id/nend"
-			android:layout_width="wrap_content"
-			android:layout_height="50dp"
-            NendApiKey="3e212e87ea879e4d0836e571681c973d0b3e27de"
-            NendSpotId="67356"
-			/>
-		-->
     </LinearLayout>
+
 </LinearLayout>

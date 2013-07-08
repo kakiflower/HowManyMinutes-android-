@@ -9,11 +9,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +21,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -42,7 +41,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -61,8 +59,8 @@ public class main extends SherlockActivity implements OnItemClickListener{
 	SharedPreferences sp;
 	
 	// JSONデータ取得先
-	private String tdlUrl = "http://www.kakiflower.net/app/how-many-minute-test/tdl.php";
-	private String tdsUrl = "http://www.kakiflower.net/app/how-many-minute-test/tds.php";
+	private String tdlUrl = "http://www.kakiflower.net/app/how-many-minute/tdl.php";
+	private String tdsUrl = "http://www.kakiflower.net/app/how-many-minute/tds.php";
 
 	// 最後に選択したリスト番号
 	private int _pos;
@@ -240,13 +238,15 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
 	 @Override
     protected void onStart() {
+ 
+		// 言語設定を反映
+    	sp = PreferenceManager.getDefaultSharedPreferences(this);
+    	String lang = sp.getString("LANGUAGE", Locale.getDefault().toString());
 
     	// タイトルバー用のエリア名を設定
     	this._setTitleBarName();
-    	
-    	// 言語設定を反映
-    	sp = PreferenceManager.getDefaultSharedPreferences(this);    	
-    	this.setLocale(sp.getString("LANGUAGE", Locale.getDefault().toString()));
+
+    	this.setLocale(lang);
 
         // 最新の待ち時間JSONデータを取得
     	// (ソート画面からバックして来た場合も強制的にリロード処理)
@@ -310,10 +310,7 @@ public class main extends SherlockActivity implements OnItemClickListener{
      * 最新の待ち時間情報を取得する
      */
     private void _reload(){
-    	
-    	// 広告の生成
-//    	this.addAd();
-    	
+    	    	
         // SharedPreferencesの取得
 		sp = PreferenceManager.getDefaultSharedPreferences(this);
         
@@ -328,17 +325,24 @@ public class main extends SherlockActivity implements OnItemClickListener{
         else {
         	useUrl = this.tdsUrl;
         }
-        // SharedPreferencesの取得
-    	sp = PreferenceManager.getDefaultSharedPreferences(this);
-
+    	
         // 端末の言語設定により取得JSONパラメタを付与
-        if ("ja_JP".equals(sp.getString("LANGUAGE", Locale.getDefault().toString())) ||
-        	"ja_jp".equals(sp.getString("LANGUAGE", Locale.getDefault().toString()))) {
+    	String locale = sp.getString("LANGUAGE", Locale.getDefault().toString());
 
-            // 日本語の処理
-        } else {
-            // 日本語以外(英語)の処理
-        	useUrl += "?lang=en";
+    	// 日本語
+    	if (locale.startsWith("ja")){
+    	}
+    	// 中国語(繁体)
+        else if (locale.equalsIgnoreCase("zh_TW")){
+        	useUrl += "?lang=ch_easy";
+        }
+    	// 中国語(簡体)
+        else if (locale.startsWith("zh")){
+        	useUrl += "?lang=ch_hard";
+        }
+        // 該当しない場合は英語で表記
+        else {
+        	useUrl += "?lang=en";        	
         }
 
         // ネットワーク未接続の場合はダイアログ表示
@@ -791,17 +795,19 @@ public class main extends SherlockActivity implements OnItemClickListener{
         
         // 日付保存対象
         String key;
-        
+
+        // 端末の言語設定
+    	String locale = sp.getString("LANGUAGE", Locale.getDefault().toString());
+
         // ディズニーランド
         if ("area_tdl".equals(sp.getString("AREA", "area_tdl"))) {
-            key = "save_tdl_" + sp.getString("LANGUAGE", Locale.getDefault().toString());
-            prev_date = sp.getInt(key, 0);
+            key = "save_tdl_" + locale;
         }
         // ディズニーシー
         else {
-        	key = "save_tds_" + sp.getString("LANGUAGE", Locale.getDefault().toString());
-        	prev_date = sp.getInt(key, 0);
+        	key = "save_tds_" + locale;
         }
+    	prev_date = sp.getInt(key, 0);
 
         // 最終利用日が異なる場合は初回アクセス扱いとし終了
         if (now_date != prev_date || prev_date == 0) {
@@ -811,7 +817,6 @@ public class main extends SherlockActivity implements OnItemClickListener{
 
     		// 現在の運営状況を初期値として保存する
     		for (int i = 0; i < this.atrcList.size(); i++) {
-
     			
             	// 選択されたアトラクション情報
             	atrc = this.atrcList.get(i);
@@ -1228,11 +1233,31 @@ public class main extends SherlockActivity implements OnItemClickListener{
      * @param lang 言語
      */
 	void setLocale(String lang){
-		Locale locale = new Locale(lang);
+		Locale locale;
+		
+    	// 日本語
+    	if (lang.startsWith("ja")){
+    		locale = Locale.JAPAN;
+    	}
+    	// 中国語(繁体)
+        else if (lang.equals("zh_TW")){
+        	locale = Locale.TAIWAN;
+        }
+    	// 中国語(簡体)
+        else if (lang.startsWith("zh")){
+        	locale = Locale.CHINESE;
+        }
+        // 該当しない場合は英語で表記
+        else {
+        	locale = Locale.ENGLISH;        	
+        }
+    	
+		// リソースの指定
 		Locale.setDefault(locale);
 		Configuration config = new Configuration();
 		config.locale = locale;
-		getResources().updateConfiguration(config, null);
+		Resources resource = getBaseContext().getResources();
+		resource.updateConfiguration(config, null);		
 	}
 	
 	/**
